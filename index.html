@@ -2,32 +2,33 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>PokeGrade</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0a0f;
-  --bg2: #12121a;
-  --bg3: #1a1a26;
-  --surface: #1e1e2e;
-  --surface2: #252538;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --text: #f0f0f8;
-  --muted: #7070a0;
+  --bg: #000;
+  --bg2: #0a0a12;
+  --surface: #16161f;
+  --surface2: #1f1f2b;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.15);
+  --text: #fff;
+  --muted: #8a8aa0;
   --accent: #e85d2a;
-  --accent2: #ff7a45;
   --psa: #e8b030;
   --bgs: #5090e0;
   --cgc: #50c070;
-  --red: #e84040;
-  --orange: #e87030;
+  --orange: #ff8c42;
+  --red: #ff4d4d;
 }
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; -webkit-touch-callout:none; }
+html, body { overscroll-behavior: none; }
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -35,1351 +36,1393 @@ body {
   margin: 0 auto;
   overflow-x: hidden;
   position: relative;
+  -webkit-font-smoothing: antialiased;
 }
-
-/* ---- SCREENS ---- */
 .screen { display:none; min-height:100vh; flex-direction:column; }
-.screen.active { display:flex; }
+.screen.active { display:flex; animation: fadeIn 0.22s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
 
-/* ---- HOME ---- */
-#home {
-  background: var(--bg);
-  padding: 0 0 100px;
-}
-.home-header {
-  padding: 56px 24px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+/* ===== HOME ===== */
+#home { padding: 0 0 110px; }
+.home-top {
+  padding: 60px 22px 22px;
+  display: flex; justify-content:space-between; align-items:center;
 }
 .home-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 42px;
-  letter-spacing: 1px;
-  line-height: 1;
-  color: var(--text);
+  font-size: 38px; letter-spacing: 1.5px; line-height:1;
 }
-.home-subtitle { font-size: 13px; color: var(--muted); margin-top: 4px; }
-.three-dots {
-  width: 36px; height: 36px;
-  display: flex; align-items:center; justify-content:center;
-  background: var(--surface);
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 18px;
-  color: var(--muted);
-  letter-spacing: 1px;
+.home-title span { color: var(--accent); }
+.icon-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--surface); display:flex; align-items:center; justify-content:center;
+  cursor:pointer; color: var(--muted); font-size: 18px;
 }
-
-.pile-empty {
-  margin: 0 16px 24px;
-  border: 1.5px dashed var(--border2);
-  border-radius: 16px;
-  padding: 28px 20px;
-  text-align: center;
+.empty-pile {
+  margin: 0 18px 22px; padding: 26px 18px;
+  border: 1.5px dashed var(--border2); border-radius: 16px; text-align:center;
 }
-.pile-empty p { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
-.pile-empty span { font-size: 13px; color: var(--muted); }
-
-.section-header {
-  display: flex; justify-content:space-between; align-items:center;
-  padding: 0 20px 12px;
+.empty-pile p { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.empty-pile span { font-size: 13px; color: var(--muted); }
+.section-hdr {
+  display:flex; justify-content:space-between; align-items:center;
+  padding: 4px 22px 14px;
 }
-.section-title { font-size: 20px; font-weight: 600; }
-.section-icon { color: var(--muted); font-size: 22px; cursor: pointer; }
-
-.grade-item {
-  display: flex; align-items:center; gap: 14px;
-  padding: 14px 20px;
+.section-hdr h2 { font-size: 20px; font-weight: 700; }
+.grade-row {
+  display:flex; align-items:center; gap: 14px;
+  padding: 12px 22px; cursor:pointer;
   border-bottom: 1px solid var(--border);
-  cursor: pointer;
   transition: background 0.15s;
 }
-.grade-item:hover { background: var(--surface); }
+.grade-row:active { background: var(--surface); }
 .grade-thumb {
-  width: 54px; height: 76px;
-  border-radius: 6px;
-  object-fit: cover;
-  background: var(--surface2);
-  flex-shrink: 0;
-  overflow: hidden;
-  display: flex; align-items:center; justify-content:center;
-  font-size: 24px;
+  width: 50px; height: 70px; border-radius: 6px;
+  background: var(--surface2); overflow:hidden; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
 }
 .grade-thumb img { width:100%; height:100%; object-fit:cover; }
 .grade-info { flex:1; min-width:0; }
-.grade-name { font-size: 16px; font-weight: 500; }
-.grade-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.grade-info h3 { font-size: 15px; font-weight: 600; }
+.grade-info p { font-size: 11px; color: var(--muted); margin: 2px 0 6px; }
 .grade-badge {
-  display: inline-flex; align-items:center; gap: 5px;
-  background: var(--surface2);
-  border-radius: 8px;
-  padding: 4px 10px;
-  margin-top: 6px;
+  display:inline-flex; align-items:center; gap: 6px;
+  background: var(--surface); padding: 4px 9px; border-radius: 7px;
   font-size: 12px;
 }
-.grade-badge .grader-label { font-weight: 700; font-size: 11px; letter-spacing: 0.5px; color: var(--psa); }
-.grade-badge .grade-num { font-size: 15px; font-weight: 700; color: var(--text); }
-.grade-badge .grade-pct { font-size: 12px; color: var(--psa); font-weight: 600; }
-.add-pile-btn {
-  margin-left: auto;
-  font-size: 12px;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 6px 10px;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
+.grade-badge b { color: var(--psa); font-weight: 700; font-size: 11px; }
+.grade-badge .n { font-weight: 700; font-size: 14px; }
+.grade-badge .p { color: var(--psa); font-weight: 600; font-size: 11px; }
 
-/* ---- CTA BUTTON ---- */
 .cta-wrap {
-  position: fixed;
-  bottom: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 100%; max-width: 430px;
-  padding: 16px 20px 36px;
-  background: linear-gradient(to top, var(--bg) 70%, transparent);
+  position: fixed; bottom:0; left:50%; transform:translateX(-50%);
+  width:100%; max-width: 430px;
+  padding: 16px 20px calc(28px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--bg) 60%, transparent);
+  z-index: 100;
 }
-.cta-btn {
-  width: 100%;
-  height: 58px;
-  background: var(--accent);
-  border: none;
-  border-radius: 18px;
-  color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 17px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex; align-items:center; justify-content:center; gap: 10px;
-  transition: transform 0.1s, background 0.15s;
+.cta {
+  width:100%; height: 58px; border:none; border-radius: 18px;
+  background: var(--accent); color: #fff; font-family:'Inter',sans-serif;
+  font-size: 16px; font-weight: 700; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap: 10px;
+  transition: transform 0.1s;
 }
-.cta-btn:active { transform: scale(0.97); background: var(--accent2); }
-.cta-icon { font-size: 20px; }
+.cta:active { transform: scale(0.97); }
+.cta svg { width: 20px; height: 20px; }
 
-/* ---- CAMERA SCREEN ---- */
-#camera {
-  background: #000;
-  position: relative;
+/* ===== CAMERA ===== */
+#camera { background: #000; position: relative; }
+.cam-top {
+  position: absolute; top:0; left:0; right:0; z-index:20;
+  padding: calc(46px + env(safe-area-inset-top)) 18px 14px;
+  display:flex; justify-content:space-between; align-items:center;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent);
 }
-.cam-header {
-  position: absolute; top:0; left:0; right:0;
-  padding: 52px 20px 16px;
-  display: flex; justify-content:space-between; align-items:center;
-  z-index: 10;
+.cam-cancel { font-size: 15px; font-weight: 500; cursor:pointer; }
+.cam-top h2 { font-size: 17px; font-weight: 600; }
+.cam-instr {
+  position: absolute; top: calc(110px + env(safe-area-inset-top)); left:0; right:0;
+  text-align:center; font-size: 13px; color: rgba(255,255,255,0.75);
+  z-index: 15; padding: 0 30px;
 }
-.cam-title { font-size: 17px; font-weight: 600; text-align:center; flex:1; }
-.cam-cancel { font-size: 15px; color: var(--text); cursor:pointer; }
-
-.cam-instruction {
-  position: absolute; top: 110px; left:0; right:0;
-  text-align: center;
-  font-size: 14px;
-  color: rgba(255,255,255,0.7);
-  z-index: 10;
-}
-
-#cam-preview {
-  width: 100%; height: 100vh;
-  object-fit: cover;
-  position: absolute; top:0; left:0;
+#cam-video {
+  width:100%; height:100vh; object-fit:cover;
+  position:absolute; top:0; left:0;
 }
 .cam-guide {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 76%; aspect-ratio: 2.5/3.5;
-  z-index: 5;
-  pointer-events: none;
+  position: absolute; top:50%; left:50%; transform: translate(-50%,-50%);
+  width: 78%; aspect-ratio: 2.5/3.5;
+  z-index: 10; pointer-events:none;
 }
-.cam-guide::before, .cam-guide::after,
-.cam-guide-tl, .cam-guide-tr, .cam-guide-bl, .cam-guide-br {
-  position: absolute;
-  width: 28px; height: 28px;
-  border-color: rgba(255,255,255,0.8);
-  border-style: solid;
+.cam-guide div {
+  position:absolute; width: 32px; height: 32px;
+  border-color: #fff; border-style: solid;
 }
-.cam-guide-tl { top:0; left:0; border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
-.cam-guide-tr { top:0; right:0; border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
-.cam-guide-bl { bottom:0; left:0; border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
-.cam-guide-br { bottom:0; right:0; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+.cg1 { top:0; left:0; border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
+.cg2 { top:0; right:0; border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
+.cg3 { bottom:0; left:0; border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
+.cg4 { bottom:0; right:0; border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
 
-.cam-tabs {
-  position: absolute;
-  bottom: 120px; left: 50%;
-  transform: translateX(-50%);
-  display: flex; gap: 6px;
-  background: rgba(0,0,0,0.5);
-  border-radius: 14px;
-  padding: 4px;
-  z-index: 10;
+.cam-side-tabs {
+  position: absolute; bottom: calc(135px + env(safe-area-inset-bottom));
+  left: 50%; transform: translateX(-50%);
+  display:flex; gap: 4px; background: rgba(0,0,0,0.55);
+  padding: 4px; border-radius: 14px; z-index: 15;
 }
-.cam-tab {
-  padding: 8px 22px;
-  border-radius: 10px;
-  font-size: 14px; font-weight: 500;
-  cursor: pointer;
-  color: rgba(255,255,255,0.6);
-  transition: all 0.15s;
+.cam-side-tab {
+  padding: 8px 22px; border-radius: 10px;
+  font-size: 14px; font-weight: 600; cursor:pointer;
+  color: rgba(255,255,255,0.65); transition: all 0.15s;
 }
-.cam-tab.active {
-  background: #fff;
-  color: #000;
-}
+.cam-side-tab.active { background:#fff; color:#000; }
+.cam-side-tab.captured { color: var(--accent); }
 
-.cam-actions {
-  position: absolute;
-  bottom: 28px; left:0; right:0;
-  display: flex; align-items:center; justify-content:space-around;
-  padding: 0 30px;
-  z-index: 10;
+.cam-bottom {
+  position: absolute; bottom: calc(20px + env(safe-area-inset-bottom));
+  left:0; right:0; z-index: 15;
+  display:flex; align-items:center; justify-content:space-around;
+  padding: 0 28px;
 }
 .cam-gallery {
-  width: 52px; height: 52px;
-  border-radius: 12px;
-  background: var(--surface2);
-  display: flex; align-items:center; justify-content:center;
-  cursor: pointer;
-  overflow: hidden;
+  width: 54px; height: 54px; border-radius: 12px;
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  overflow:hidden;
 }
 .cam-gallery img { width:100%; height:100%; object-fit:cover; }
 .cam-shoot {
-  width: 72px; height: 72px;
-  border-radius: 50%;
-  background: #fff;
-  border: 4px solid rgba(255,255,255,0.4);
-  cursor: pointer;
-  display: flex; align-items:center; justify-content:center;
+  width: 76px; height: 76px; border-radius:50%;
+  background: rgba(255,255,255,0.18); border: 4px solid #fff;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
   transition: transform 0.1s;
 }
 .cam-shoot:active { transform: scale(0.93); }
-.cam-shoot-inner {
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  background: #fff;
-  border: 2px solid #ddd;
+.cam-shoot::after {
+  content:''; width: 56px; height: 56px; border-radius:50%; background:#fff;
 }
-.cam-recal {
-  width: 52px; height: 52px;
-  border-radius: 12px;
-  background: var(--surface2);
-  display: flex; align-items:center; justify-content:center;
-  cursor: pointer;
-  font-size: 12px; color: rgba(255,255,255,0.7);
-  text-align:center; line-height:1.2;
-  flex-direction: column; gap: 4px;
+.cam-flip {
+  width: 54px; height: 54px; border-radius: 12px;
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
-.cam-recal svg { opacity: 0.7; }
+#file-front, #file-back { display:none; }
 
-/* hidden file input */
-#file-input-front, #file-input-back { display:none; }
-
-/* ---- ANALYZING ---- */
+/* ===== ANALYZING ===== */
 #analyzing {
-  background: var(--bg);
-  align-items: center;
-  justify-content: center;
+  background: var(--bg); align-items:center; justify-content:center;
 }
-.analyze-wrap { text-align:center; padding: 40px 20px; }
+.analyze-box { text-align:center; padding: 30px; }
 .spinner {
-  width: 64px; height: 64px;
+  width: 56px; height: 56px;
   border: 3px solid var(--surface2);
-  border-top: 3px solid var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 28px;
+  border-top-color: var(--accent);
+  border-radius:50%; margin: 0 auto 24px;
+  animation: spin 0.9s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.analyze-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; margin-bottom: 8px; }
-.analyze-sub { color: var(--muted); font-size: 14px; }
+.analyze-box h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 1px; margin-bottom: 6px;
+}
+.analyze-box p { font-size: 13px; color: var(--muted); }
 
-/* ---- RESULT SCREEN ---- */
-#result { background: var(--bg); }
-.result-header {
-  display: flex; justify-content:space-between; align-items:center;
-  padding: 52px 20px 16px;
+/* ===== RESULT ===== */
+#result { padding-bottom: 120px; }
+.res-top {
+  display:flex; justify-content:space-between; align-items:center;
+  padding: calc(48px + env(safe-area-inset-top)) 18px 14px;
 }
-.result-back { cursor:pointer; color: var(--muted); font-size: 22px; }
-.grader-tabs {
-  display: flex; gap: 10px; align-items:center;
+.back-btn {
+  width: 36px; height: 36px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size: 22px; color: var(--text);
 }
-.grader-pill {
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
-  cursor: pointer;
-  opacity: 0.45;
+.grader-pills { display:flex; gap: 8px; }
+.gpill {
+  padding: 5px 12px; border-radius: 9px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.5px;
+  cursor:pointer; border: 1.5px solid; opacity: 0.4;
   transition: opacity 0.15s;
 }
-.grader-pill.active { opacity: 1; }
-.grader-pill.psa { color: var(--psa); border: 1px solid var(--psa); }
-.grader-pill.bgs { color: var(--bgs); border: 1px solid var(--bgs); }
-.grader-pill.cgc { color: var(--cgc); border: 1px solid var(--cgc); }
+.gpill.active { opacity: 1; }
+.gpill.psa { color: var(--psa); border-color: var(--psa); }
+.gpill.bgs { color: var(--bgs); border-color: var(--bgs); }
+.gpill.cgc { color: var(--cgc); border-color: var(--cgc); }
 
-.result-card {
-  margin: 0 16px 16px;
+.res-card {
+  margin: 0 14px 14px;
   background: var(--surface);
-  border-radius: 20px;
-  overflow: hidden;
-  border: 1px solid var(--border2);
-}
-.result-card-header {
-  display: flex; justify-content:space-between; align-items:flex-start;
-  padding: 16px 18px 14px;
-  border-bottom: 1px solid var(--border);
-}
-.result-card-name { font-size: 18px; font-weight: 600; }
-.result-card-set { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.big-grade { text-align:right; }
-.big-grade-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 64px;
-  line-height: 1;
-  color: var(--text);
-}
-.big-grade-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; }
-.big-grade-pct { font-size: 13px; font-weight: 600; }
-
-.card-img-wrap {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  background: #000;
-}
-.card-img-wrap img {
-  width: 100%;
-  display: block;
-  object-fit: contain;
-  max-height: 340px;
-}
-.flip-btn {
-  position: absolute; bottom: 10px; left: 14px;
-  background: rgba(0,0,0,0.55);
-  border: none; color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 500;
-  padding: 6px 14px; border-radius: 20px;
-  cursor: pointer;
-  display: flex; align-items:center; gap: 6px;
-}
-.show-details-btn {
-  position: absolute; bottom: 10px; right: 14px;
-  background: rgba(0,0,0,0.55);
-  border: none; color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 500;
-  padding: 6px 14px; border-radius: 20px;
-  cursor: pointer;
-}
-
-/* centering overlay on card image */
-.centering-overlay {
-  position: absolute; top:0; left:0; right:0; bottom:0;
-  pointer-events: none;
-}
-.center-bar {
-  position: absolute;
-  background: var(--orange);
-  opacity: 0.85;
-}
-.center-bar.top { top:0; left: 12%; right: 12%; height: 5px; border-radius: 0 0 3px 3px; }
-.center-bar.bottom { bottom:0; left: 12%; right: 12%; height: 5px; border-radius: 3px 3px 0 0; }
-.center-bar.left { left:0; top: 10%; bottom: 10%; width: 5px; border-radius: 0 3px 3px 0; }
-.center-bar.right { right:0; top: 10%; bottom: 10%; width: 5px; border-radius: 3px 0 0 3px; }
-.center-border {
-  position: absolute;
-  border: 1.5px solid var(--red);
-  border-radius: 6px;
-  top: 5px; left: 5px; right: 5px; bottom: 5px;
-  pointer-events: none;
-}
-.center-label {
-  position: absolute;
-  background: rgba(0,0,0,0.65);
-  color: #fff;
-  font-size: 12px; font-weight: 600;
-  padding: 2px 7px;
-  border-radius: 4px;
-  pointer-events: none;
-}
-.defect-marker {
-  position: absolute;
-  width: 22px; height: 22px;
-  border: 2px solid var(--red);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-.defect-marker:hover { transform: scale(1.1); }
-
-/* scores grid */
-.scores-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 1px;
-  background: var(--border);
-}
-.score-cell {
-  background: var(--surface);
-  padding: 10px 6px;
-  text-align:center;
-}
-.score-cell-label { font-size: 10px; color: var(--muted); margin-bottom: 3px; font-weight: 500; letter-spacing: 0.3px; }
-.score-cell-value { font-size: 16px; font-weight: 700; }
-
-/* bottom actions */
-.result-bottom {
-  margin: 0 16px 120px;
-  display: flex; flex-direction:column; gap: 10px;
-}
-.result-action {
-  display: flex; align-items:center; gap: 14px;
-  padding: 16px 18px;
-  background: var(--surface);
-  border-radius: 14px;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  transition: background 0.15s;
-}
-.result-action:hover { background: var(--surface2); }
-.result-action-icon {
-  width: 38px; height: 38px;
-  border-radius: 10px;
-  background: var(--surface2);
-  display: flex; align-items:center; justify-content:center;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-.result-action-text { font-size: 15px; font-weight: 500; }
-.result-action-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
-.result-action.danger .result-action-text { color: var(--red); }
-.result-action.danger .result-action-icon { background: rgba(232,64,64,0.1); }
-
-.add-collection-wrap {
-  position: fixed; bottom:0; left:50%; transform:translateX(-50%);
-  width:100%; max-width:430px;
-  padding: 14px 20px 36px;
-  background: linear-gradient(to top, var(--bg) 70%, transparent);
-}
-.add-collection-btn {
-  width: 100%; height: 54px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 16px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px; font-weight: 600;
-  cursor: pointer;
-  display: flex; align-items:center; justify-content:center; gap: 10px;
-  transition: background 0.15s;
-}
-.add-collection-btn .price-tag { color: var(--cgc); }
-
-/* ---- EDIT CENTERING ---- */
-#edit-center {
-  background: var(--bg);
-}
-.edit-header {
-  display: flex; justify-content:space-between; align-items:center;
-  padding: 52px 20px 16px;
-}
-.edit-cancel { font-size: 15px; color: var(--text); cursor:pointer; }
-.edit-title { font-size: 17px; font-weight: 600; }
-.edit-done {
-  background: var(--text);
-  color: var(--bg);
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px; font-weight: 600;
-  padding: 7px 18px;
   border-radius: 22px;
-  cursor: pointer;
-}
-
-.center-edit-img-wrap {
-  position: relative;
-  margin: 0 16px;
-  border-radius: 14px;
+  border: 1px solid var(--border);
   overflow: hidden;
-  background: #000;
-  touch-action: none;
 }
-.center-edit-img-wrap img {
-  width: 100%;
-  display: block;
-  object-fit: contain;
-  max-height: 360px;
-  user-select: none;
-  pointer-events: none;
+.res-card-head {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  padding: 16px 18px 12px;
 }
-/* draggable edge lines */
-.edge-line {
-  position: absolute;
-  background: var(--orange);
-  opacity: 0.9;
-  cursor: pointer;
-  touch-action: none;
-  z-index: 5;
+.res-card-head h1 { font-size: 18px; font-weight: 700; }
+.res-card-head .meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.big-grade { text-align:right; min-width: 90px; }
+.big-grade .n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px; line-height: 0.9; letter-spacing: 1px;
 }
-.edge-line.horiz { left: 8%; right: 8%; height: 4px; border-radius: 2px; }
-.edge-line.vert  { top: 8%; bottom: 8%; width: 4px; border-radius: 2px; }
-.edge-line.top-line { top: 10%; }
-.edge-line.bottom-line { bottom: 10%; }
-.edge-line.left-line { left: 8%; }
-.edge-line.right-line { right: 8%; }
-.edge-pct-label {
-  position: absolute;
-  background: rgba(0,0,0,0.7);
-  color: #fff;
-  font-size: 12px; font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 4px;
-  pointer-events: none;
-  z-index: 6;
-}
-.inner-card-border {
-  position: absolute;
-  border: 1.5px solid var(--red);
-  border-radius: 5px;
-  pointer-events: none;
-  z-index: 4;
-}
+.big-grade .lbl { font-size: 10px; font-weight: 800; letter-spacing: 1.2px; margin-top: 3px; }
+.big-grade .pct { font-size: 12px; font-weight: 700; margin-top: 1px; }
 
-.center-controls {
-  padding: 20px 16px 0;
-}
-.ctrl-row {
-  display: flex; align-items:center; justify-content:space-between;
-  padding: 14px 0;
+/* face tabs (recto/verso) */
+.face-tabs {
+  display:flex; padding: 0 18px;
   border-bottom: 1px solid var(--border);
 }
-.ctrl-label { font-size: 14px; color: var(--muted); }
-.ctrl-val { font-size: 14px; font-weight: 700; }
-.ctrl-slider {
-  width: 100%;
-  margin: 4px 0 0;
-  accent-color: var(--orange);
-}
-
-/* ---- EDIT DAMAGE ---- */
-#edit-damage { background: var(--bg); }
-.damage-img-wrap {
-  position: relative;
-  margin: 0 16px;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #000;
-}
-.damage-img-wrap img {
-  width: 100%; display: block;
-  object-fit: contain; max-height: 360px;
-  user-select: none;
-}
-.damage-controls {
-  padding: 16px 16px 0;
-  display: flex; flex-direction:column; gap: 10px;
-}
-.damage-toolbar {
-  display: flex; align-items:center; justify-content:space-between;
-  background: var(--surface);
-  border-radius: 14px;
-  padding: 14px 16px;
-}
-.damage-toolbar-title { font-size: 16px; font-weight: 600; display:flex; align-items:center; gap: 8px; }
-.undo-btn {
-  background: none; border: none;
-  color: var(--muted); font-family: 'DM Sans', sans-serif;
-  font-size: 14px; cursor: pointer;
-  display: flex; align-items:center; gap: 6px;
-  padding: 0;
-}
-.damage-btns {
-  display: flex; gap: 10px;
-}
-.dmg-btn {
-  flex: 1; height: 44px;
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 12px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 500;
-  cursor: pointer;
-  display: flex; align-items:center; justify-content:center; gap: 6px;
-  transition: background 0.15s;
-}
-.dmg-btn:active { background: var(--surface2); }
-.size-toggle {
-  display: flex;
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 4px;
-  gap: 4px;
-}
-.size-opt {
-  flex:1; height: 36px;
-  background: none;
-  border: none;
-  border-radius: 8px;
-  color: var(--muted);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px; cursor: pointer;
-  transition: all 0.15s;
-}
-.size-opt.active { background: var(--surface2); color: var(--text); font-weight:600; }
-.dmg-hint { font-size: 12px; color: var(--muted); text-align:center; padding-top: 4px; }
-
-/* clickable overlay for adding defects */
-.defect-click-overlay {
-  position: absolute; top:0; left:0; right:0; bottom:0;
-  cursor: crosshair;
-  z-index: 3;
-}
-.defect-dot {
-  position: absolute;
-  border: 2px solid var(--red);
-  border-radius: 3px;
-  cursor: pointer;
-  z-index: 5;
-}
-.defect-dot.sm { width: 14px; height: 14px; margin: -7px 0 0 -7px; }
-.defect-dot.md { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
-.defect-dot.lg { width: 32px; height: 32px; margin: -16px 0 0 -16px; }
-
-/* ---- TRANSITIONS ---- */
-.screen { animation: fadeIn 0.2s ease; }
-@keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:translateY(0); } }
-
-/* bottom nav */
-.bottom-nav {
-  position: fixed; bottom:0; left:50%; transform:translateX(-50%);
-  width:100%; max-width:430px;
-  display: flex; justify-content:space-around;
-  padding: 12px 10px 28px;
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-  z-index: 50;
-}
-.nav-item {
-  display: flex; flex-direction:column; align-items:center; gap: 4px;
-  cursor: pointer; color: var(--muted);
-  font-size: 10px; font-weight: 500;
+.face-tab {
+  flex:1; padding: 12px 0; text-align:center;
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  cursor:pointer; position:relative;
   transition: color 0.15s;
 }
-.nav-item.active { color: var(--accent); }
-.nav-icon { font-size: 22px; line-height:1; }
+.face-tab.active { color: var(--text); }
+.face-tab.active::after {
+  content:''; position: absolute; bottom:-1px; left:25%; right:25%;
+  height: 2px; background: var(--accent); border-radius: 1px;
+}
+
+/* card image + overlay */
+.face-area {
+  position: relative;
+  width: 100%;
+  background: #000;
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
+}
+.face-img {
+  width: 100%; display:block;
+  max-height: 60vh; object-fit: contain;
+  pointer-events: none;
+}
+/* the "card bounding box" inside the photo. computed from analysis */
+.card-box {
+  position: absolute;
+  pointer-events: none;
+  /* outer red border = card edges */
+}
+.card-box .outer {
+  position:absolute; inset:0;
+  border: 1.5px solid var(--red);
+  border-radius: 5px;
+}
+.card-box .inner {
+  position:absolute;
+  border: 1.5px solid var(--red);
+  border-radius: 4px;
+  /* placed by JS */
+}
+/* the 4 orange bars - represent margin width on each side */
+.mbar { position:absolute; background: var(--orange); border-radius: 2px; opacity:0.95; }
+.mbar.top, .mbar.bottom { height: 6px; left: 18%; right: 18%; }
+.mbar.left, .mbar.right { width: 6px; top: 22%; bottom: 22%; }
+.mbar.draggable { cursor: pointer; touch-action: none; }
+.mbar.draggable::after {
+  content:''; position:absolute;
+  /* invisible larger hit area */
+}
+.mbar.top::after, .mbar.bottom::after { top:-10px; bottom:-10px; left:0; right:0; }
+.mbar.left::after, .mbar.right::after { left:-10px; right:-10px; top:0; bottom:0; }
+
+/* % labels next to each bar */
+.mlbl {
+  position: absolute;
+  background: rgba(0,0,0,0.78);
+  color:#fff; font-size: 11px; font-weight: 700;
+  padding: 3px 7px; border-radius: 5px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* defect dots */
+.defect {
+  position:absolute;
+  border: 2px solid var(--red);
+  border-radius: 3px;
+  background: rgba(255,77,77,0.15);
+  pointer-events: auto; cursor:pointer;
+}
+.defect.sm { width: 14px; height: 14px; margin: -7px 0 0 -7px; }
+.defect.md { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+.defect.lg { width: 32px; height: 32px; margin: -16px 0 0 -16px; }
+
+/* swipe between front/back */
+.faces-swiper {
+  position: relative;
+  overflow: hidden;
+}
+.face-page {
+  display: none;
+}
+.face-page.active { display: block; }
+
+/* score grid */
+.score-grid {
+  display:grid; grid-template-columns: repeat(4,1fr);
+  background: var(--border);
+  gap: 1px;
+}
+.score-cell {
+  background: var(--surface); padding: 10px 4px; text-align:center;
+}
+.score-cell .lbl { font-size: 9px; color: var(--muted); font-weight: 600; letter-spacing: 0.6px; margin-bottom: 3px; }
+.score-cell .val { font-size: 15px; font-weight: 700; }
+
+.flip-pill {
+  position:absolute; bottom: 10px; left:14px;
+  background: rgba(0,0,0,0.6); color:#fff;
+  border:none; padding: 6px 12px; border-radius: 18px;
+  font-size: 12px; font-weight: 600; cursor:pointer;
+  display:flex; align-items:center; gap: 5px;
+  font-family: 'Inter', sans-serif;
+}
+.detail-pill {
+  position:absolute; bottom: 10px; right:14px;
+  background: rgba(0,0,0,0.6); color:#fff;
+  border:none; padding: 6px 12px; border-radius: 18px;
+  font-size: 12px; font-weight: 600; cursor:pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+/* actions */
+.act-list { margin: 16px 14px 0; display:flex; flex-direction:column; gap: 8px; }
+.act-item {
+  display:flex; align-items:center; gap: 14px;
+  padding: 14px 16px; background: var(--surface);
+  border-radius: 14px; cursor:pointer;
+  border: 1px solid var(--border);
+}
+.act-icon {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: var(--surface2); display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.act-icon svg { width: 18px; height: 18px; color: var(--text); }
+.act-text { font-size: 14px; font-weight: 600; }
+.act-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.act-item.danger .act-text { color: var(--red); }
+.act-item.danger .act-icon { background: rgba(255,77,77,0.12); }
+.act-item.danger .act-icon svg { color: var(--red); }
+
+.add-coll-wrap {
+  position: fixed; bottom:0; left:50%; transform:translateX(-50%);
+  width:100%; max-width: 430px; z-index:100;
+  padding: 14px 18px calc(26px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--bg) 65%, transparent);
+}
+.add-coll {
+  width:100%; height: 52px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 16px; color: var(--text);
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap: 8px;
+}
+.add-coll .price { color: var(--cgc); margin-left: 4px; }
+
+/* ===== EDIT CENTER (full screen) ===== */
+#edit-center { background: var(--bg); padding-bottom: 30px; }
+.edit-top {
+  padding: calc(48px + env(safe-area-inset-top)) 18px 16px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.edit-top .cancel { font-size: 15px; cursor:pointer; }
+.edit-top h2 { font-size: 16px; font-weight: 600; }
+.edit-top .done {
+  background: #fff; color: #000; border: none;
+  padding: 8px 18px; border-radius: 20px;
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer;
+}
+
+.edit-face-tabs {
+  display: flex; gap: 4px; margin: 0 18px 14px;
+  background: var(--surface); padding: 4px;
+  border-radius: 12px;
+}
+.edit-face-tab {
+  flex:1; padding: 9px 0; text-align:center;
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  border-radius: 9px; cursor: pointer; transition: all 0.15s;
+}
+.edit-face-tab.active { background: var(--surface2); color: var(--text); }
+
+.edit-img-wrap {
+  position: relative;
+  margin: 0 14px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+  touch-action: none;
+}
+.edit-img-wrap img {
+  width: 100%; display: block;
+  max-height: 55vh; object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hint {
+  text-align: center; padding: 14px 18px 4px;
+  font-size: 12px; color: var(--muted);
+}
+
+/* ===== EDIT DAMAGE ===== */
+#edit-damage { background: var(--bg); padding-bottom: 30px; }
+.dmg-toolbar {
+  margin: 14px 14px 0;
+  background: var(--surface); border-radius: 14px;
+  padding: 12px 14px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.dmg-toolbar .ttl {
+  font-size: 14px; font-weight: 700;
+  display:flex; align-items:center; gap: 8px;
+}
+.dmg-toolbar .cnt { color: var(--muted); font-weight: 500; }
+.dmg-undo {
+  background: none; border: none; color: var(--muted);
+  font-family: 'Inter', sans-serif; font-size: 13px; cursor:pointer;
+  display:flex; align-items:center; gap: 5px;
+}
+
+.size-pick {
+  margin: 10px 14px 0; display:flex;
+  background: var(--surface); border-radius: 12px; padding: 4px;
+}
+.size-pick button {
+  flex:1; height: 38px; border:none;
+  background: none; color: var(--muted);
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  border-radius: 8px; cursor:pointer;
+}
+.size-pick button.active { background: var(--surface2); color: var(--text); }
+
+/* ===== API MODAL ===== */
+.modal-bg {
+  display:none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85); z-index: 9999;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-bg.show { display: flex; }
+.modal-bg .box {
+  background: var(--surface); border-radius: 20px; padding: 26px 22px;
+  max-width: 360px; width: 100%; border: 1px solid var(--border2);
+}
+.modal-bg h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.modal-bg p { font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.45; }
+.modal-bg input {
+  width:100%; padding: 12px 14px;
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 12px; color: var(--text);
+  font-family: 'Inter', sans-serif; font-size: 14px;
+  margin-bottom: 12px; outline:none;
+  -webkit-appearance:none;
+}
+.modal-bg input:focus { border-color: var(--accent); }
+.modal-bg .btn-primary {
+  width:100%; height: 46px; border:none;
+  background: var(--accent); color:#fff;
+  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700;
+  border-radius: 12px; cursor:pointer;
+}
+.modal-bg .btn-text {
+  width:100%; height: 36px; border:none;
+  background: none; color: var(--muted);
+  font-family: 'Inter', sans-serif; font-size: 13px;
+  margin-top: 6px; cursor:pointer;
+}
+
+/* error toast */
+.toast {
+  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+  background: rgba(255,77,77,0.95); color:#fff;
+  padding: 10px 18px; border-radius: 12px;
+  font-size: 13px; font-weight: 600; z-index: 9000;
+  display: none; max-width: 320px;
+}
+.toast.show { display:block; animation: fadeIn 0.2s ease; }
 </style>
 </head>
 <body>
 
-<!-- ===== HOME ===== -->
+<!-- ============ HOME ============ -->
 <div id="home" class="screen active">
-  <div class="home-header">
-    <div>
-      <div class="home-title">PokeGrade</div>
-      <div class="home-subtitle">Analyse IA de grading</div>
-    </div>
-    <div class="three-dots">···</div>
+  <div class="home-top">
+    <div class="home-title">poke<span>grade</span></div>
+    <div class="icon-btn" onclick="resetApiKey()">⚙</div>
   </div>
 
-  <div class="pile-empty">
+  <div class="empty-pile" id="empty-pile">
     <p>Ta pile de grading est vide</p>
     <span>Ajoute des cartes pour suivre ce que tu veux soumettre</span>
   </div>
 
-  <div class="section-header">
-    <span class="section-title">Récents</span>
-    <span class="section-icon">🔍</span>
+  <div class="section-hdr">
+    <h2>Récents</h2>
   </div>
-
   <div id="grades-list"></div>
 
   <div class="cta-wrap">
-    <button class="cta-btn" onclick="goCamera()">
-      <span class="cta-icon">⊙</span>
+    <button class="cta" onclick="goCamera()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h3l1-2h6l1 2h3a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></svg>
       Grader une carte
     </button>
   </div>
 </div>
 
-<!-- ===== CAMERA ===== -->
+<!-- ============ CAMERA ============ -->
 <div id="camera" class="screen">
-  <div class="cam-header">
-    <span class="cam-cancel" onclick="goHome()">Annuler</span>
-    <span class="cam-title">Grader une carte</span>
-    <span style="width:60px"></span>
-  </div>
-  <div class="cam-instruction" id="cam-instruction">Prends une photo nette du recto de la carte</div>
-
-  <video id="cam-preview" autoplay playsinline muted></video>
+  <video id="cam-video" autoplay playsinline muted></video>
   <canvas id="cam-canvas" style="display:none"></canvas>
+  <div class="cam-top">
+    <span class="cam-cancel" onclick="goHome()">Annuler</span>
+    <h2>Grader une carte</h2>
+    <span style="width:55px"></span>
+  </div>
+  <div class="cam-instr" id="cam-instr">Prends une photo nette du <b>recto</b></div>
 
   <div class="cam-guide">
-    <div class="cam-guide-tl"></div>
-    <div class="cam-guide-tr"></div>
-    <div class="cam-guide-bl"></div>
-    <div class="cam-guide-br"></div>
+    <div class="cg1"></div><div class="cg2"></div><div class="cg3"></div><div class="cg4"></div>
   </div>
 
-  <div class="cam-tabs">
-    <div class="cam-tab active" id="tab-front">Front</div>
-    <div class="cam-tab" id="tab-back">Back</div>
+  <div class="cam-side-tabs">
+    <div class="cam-side-tab active" id="tab-f">Recto</div>
+    <div class="cam-side-tab" id="tab-b">Verso</div>
   </div>
 
-  <div class="cam-actions">
-    <div class="cam-gallery" onclick="openGallery()" id="gallery-thumb">
-      <span style="font-size:22px; color:var(--muted)">🖼</span>
+  <div class="cam-bottom">
+    <div class="cam-gallery" onclick="openGallery()" id="thumb-prev">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
     </div>
-    <div class="cam-shoot" onclick="shootPhoto()">
-      <div class="cam-shoot-inner"></div>
-    </div>
-    <div class="cam-recal" onclick="recalibrate()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
-      <span>Recal.</span>
+    <div class="cam-shoot" onclick="takePhoto()"></div>
+    <div class="cam-flip" onclick="restartCamera()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 0 0 14.85 3.36L23 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10"/></svg>
     </div>
   </div>
 
-  <input type="file" id="file-input-front" accept="image/*" capture="environment">
-  <input type="file" id="file-input-back" accept="image/*" capture="environment">
+  <input type="file" id="file-front" accept="image/*">
+  <input type="file" id="file-back" accept="image/*">
 </div>
 
-<!-- ===== ANALYZING ===== -->
+<!-- ============ ANALYZING ============ -->
 <div id="analyzing" class="screen">
-  <div class="analyze-wrap">
+  <div class="analyze-box">
     <div class="spinner"></div>
-    <div class="analyze-title">Analyse en cours...</div>
-    <div class="analyze-sub" id="analyze-step">Identification de la carte</div>
+    <h2>Analyse en cours</h2>
+    <p id="analyze-step">Identification de la carte...</p>
   </div>
 </div>
 
-<!-- ===== RESULT ===== -->
+<!-- ============ RESULT ============ -->
 <div id="result" class="screen">
-  <div class="result-header">
-    <span class="result-back" onclick="goHome()">←</span>
-    <div class="grader-tabs">
-      <span class="grader-pill psa active" onclick="switchGrader('psa')">PSA</span>
-      <span class="grader-pill bgs" onclick="switchGrader('bgs')">BGS</span>
-      <span class="grader-pill cgc" onclick="switchGrader('cgc')">CGC</span>
+  <div class="res-top">
+    <div class="back-btn" onclick="goHome()">‹</div>
+    <div class="grader-pills">
+      <span class="gpill psa active" onclick="setGrader('psa')">PSA</span>
+      <span class="gpill bgs" onclick="setGrader('bgs')">BGS</span>
+      <span class="gpill cgc" onclick="setGrader('cgc')">CGC</span>
     </div>
-    <span>···</span>
+    <div style="width:36px"></div>
   </div>
 
-  <div class="result-card">
-    <div class="result-card-header">
-      <div>
-        <div class="result-card-name" id="res-name">—</div>
-        <div class="result-card-set" id="res-set">—</div>
+  <div class="res-card">
+    <div class="res-card-head">
+      <div style="flex:1;min-width:0">
+        <h1 id="r-name">—</h1>
+        <div class="meta" id="r-meta">—</div>
       </div>
       <div class="big-grade">
-        <div class="big-grade-num" id="res-grade">—</div>
-        <div class="big-grade-label" id="res-grader-label" style="color:var(--psa)">PSA</div>
-        <div class="big-grade-pct" id="res-pct" style="color:var(--psa)">—</div>
+        <div class="n" id="r-grade">—</div>
+        <div class="lbl" id="r-glabel" style="color:var(--psa)">PSA</div>
+        <div class="pct" id="r-pct" style="color:var(--psa)">—</div>
       </div>
     </div>
 
-    <div class="card-img-wrap" id="card-img-wrap">
-      <img id="res-img" src="" alt="card">
-      <div class="centering-overlay" id="center-overlay">
-        <div class="center-bar top"></div>
-        <div class="center-bar bottom"></div>
-        <div class="center-bar left"></div>
-        <div class="center-bar right"></div>
-        <div class="center-border"></div>
-        <div class="center-label" style="top:6px;left:50%;transform:translateX(-50%)" id="pct-top">—</div>
-        <div class="center-label" style="bottom:6px;left:50%;transform:translateX(-50%)" id="pct-bottom">—</div>
-        <div class="center-label" style="left:6px;top:50%;transform:translateY(-50%)" id="pct-left">—</div>
-        <div class="center-label" style="right:6px;top:50%;transform:translateY(-50%)" id="pct-right">—</div>
-      </div>
-      <div id="result-defects"></div>
-      <button class="flip-btn" onclick="flipCard()">↻ Flip</button>
-      <button class="show-details-btn" onclick="toggleDetails()">⌃ Détails</button>
+    <div class="face-tabs">
+      <div class="face-tab active" data-face="front" onclick="showFace('front')">Recto</div>
+      <div class="face-tab" data-face="back" onclick="showFace('back')">Verso</div>
     </div>
 
-    <div class="scores-grid" id="scores-grid">
-      <div class="score-cell">
-        <div class="score-cell-label">CENTRAGE</div>
-        <div class="score-cell-value" id="sc-centering">—</div>
+    <div class="faces-swiper">
+      <div class="face-page active" data-face="front">
+        <div class="face-area" id="face-area-front">
+          <img class="face-img" id="img-front" src="">
+          <div id="overlay-front"></div>
+          <button class="flip-pill" onclick="showFace('back')">↻ Flip</button>
+          <button class="detail-pill" onclick="toggleScores()">⌃</button>
+        </div>
       </div>
-      <div class="score-cell">
-        <div class="score-cell-label">COINS</div>
-        <div class="score-cell-value" id="sc-corners">—</div>
+      <div class="face-page" data-face="back">
+        <div class="face-area" id="face-area-back">
+          <img class="face-img" id="img-back" src="">
+          <div id="overlay-back"></div>
+          <button class="flip-pill" onclick="showFace('front')">↻ Flip</button>
+          <button class="detail-pill" onclick="toggleScores()">⌃</button>
+        </div>
       </div>
-      <div class="score-cell">
-        <div class="score-cell-label">BORDS</div>
-        <div class="score-cell-value" id="sc-edges">—</div>
-      </div>
-      <div class="score-cell">
-        <div class="score-cell-label">SURFACE</div>
-        <div class="score-cell-value" id="sc-surface">—</div>
-      </div>
+    </div>
+
+    <div class="score-grid" id="score-grid">
+      <div class="score-cell"><div class="lbl">CENTRAGE</div><div class="val" id="sc-c">—</div></div>
+      <div class="score-cell"><div class="lbl">COINS</div><div class="val" id="sc-co">—</div></div>
+      <div class="score-cell"><div class="lbl">BORDS</div><div class="val" id="sc-e">—</div></div>
+      <div class="score-cell"><div class="lbl">SURFACE</div><div class="val" id="sc-s">—</div></div>
     </div>
   </div>
 
-  <div class="result-bottom">
-    <div class="result-action" onclick="goEditCenter()">
-      <div class="result-action-icon">⊞</div>
+  <div class="act-list">
+    <div class="act-item" onclick="goEditCenter()">
+      <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></div>
       <div>
-        <div class="result-action-text">Modifier le centrage</div>
-        <div class="result-action-sub">Ajuster les marges manuellement</div>
+        <div class="act-text">Modifier le centrage</div>
+        <div class="act-sub">Ajuster les marges manuellement</div>
       </div>
     </div>
-    <div class="result-action" onclick="goEditDamage()">
-      <div class="result-action-icon">⊙</div>
+    <div class="act-item" onclick="goEditDamage()">
+      <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/></svg></div>
       <div>
-        <div class="result-action-text">Modifier les défauts</div>
-        <div class="result-action-sub">Ajouter ou supprimer des marqueurs</div>
+        <div class="act-text">Modifier les défauts</div>
+        <div class="act-sub">Ajouter ou supprimer des marqueurs</div>
       </div>
     </div>
-    <div class="result-action" onclick="goCamera()">
-      <div class="result-action-icon">📷</div>
+    <div class="act-item" onclick="goCamera()">
+      <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5h3l1-2h6l1 2h3a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></svg></div>
       <div>
-        <div class="result-action-text">Reprendre les photos</div>
+        <div class="act-text">Reprendre les photos</div>
       </div>
     </div>
-    <div class="result-action danger">
-      <div class="result-action-icon">🗑</div>
-      <div>
-        <div class="result-action-text">Supprimer ce grade</div>
-      </div>
+    <div class="act-item danger" onclick="deleteCurrentGrade()">
+      <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div>
+      <div><div class="act-text">Supprimer ce grade</div></div>
     </div>
   </div>
 
-  <div class="add-collection-wrap">
-    <button class="add-collection-btn">
-      ⊕ Ajouter à la collection <span class="price-tag" id="card-price"></span>
+  <div class="add-coll-wrap">
+    <button class="add-coll">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Ajouter à la collection <span class="price" id="r-price"></span>
     </button>
   </div>
 </div>
 
-<!-- ===== EDIT CENTERING ===== -->
+<!-- ============ EDIT CENTERING ============ -->
 <div id="edit-center" class="screen">
-  <div class="edit-header">
-    <span class="edit-cancel" onclick="goResult()">Annuler</span>
-    <span class="edit-title">Modifier le centrage</span>
-    <button class="edit-done" onclick="saveCentering()">Terminé</button>
+  <div class="edit-top">
+    <span class="cancel" onclick="goResult()">Annuler</span>
+    <h2>Modifier le centrage</h2>
+    <button class="done" onclick="saveCenterEdit()">Terminé</button>
   </div>
 
-  <div class="center-edit-img-wrap" id="center-edit-wrap">
-    <img id="center-edit-img" src="" alt="card">
-    <div class="inner-card-border" id="inner-border"></div>
-    <div class="edge-line horiz top-line" id="edge-top" data-dir="top"></div>
-    <div class="edge-line horiz bottom-line" id="edge-bottom" data-dir="bottom"></div>
-    <div class="edge-line vert left-line" id="edge-left" data-dir="left"></div>
-    <div class="edge-line vert right-line" id="edge-right" data-dir="right"></div>
-    <div class="edge-pct-label" id="lbl-top"></div>
-    <div class="edge-pct-label" id="lbl-bottom"></div>
-    <div class="edge-pct-label" id="lbl-left"></div>
-    <div class="edge-pct-label" id="lbl-right"></div>
+  <div class="edit-face-tabs">
+    <div class="edit-face-tab active" data-face="front" onclick="switchEditFace('front')">Recto</div>
+    <div class="edit-face-tab" data-face="back" onclick="switchEditFace('back')">Verso</div>
   </div>
 
-  <div class="center-controls">
-    <div class="ctrl-row">
-      <span class="ctrl-label">Haut / Bas</span>
-      <span class="ctrl-val" id="ctrl-hb">—</span>
-    </div>
-    <input type="range" class="ctrl-slider" id="slider-hb" min="30" max="70" step="0.5">
-    <div class="ctrl-row" style="margin-top:12px">
-      <span class="ctrl-label">Gauche / Droite</span>
-      <span class="ctrl-val" id="ctrl-lr">—</span>
-    </div>
-    <input type="range" class="ctrl-slider" id="slider-lr" min="30" max="70" step="0.5">
+  <div class="edit-img-wrap" id="edit-wrap">
+    <img id="edit-img" src="">
+    <!-- overlay rendered by JS -->
   </div>
+
+  <div class="hint">Drag les bandes oranges pour ajuster<br>les marges intérieures de la carte</div>
 </div>
 
-<!-- ===== EDIT DAMAGE ===== -->
+<!-- ============ EDIT DAMAGE ============ -->
 <div id="edit-damage" class="screen">
-  <div class="edit-header">
-    <span class="edit-cancel" onclick="goResult()">Annuler</span>
-    <span class="edit-title">Modifier les défauts</span>
-    <button class="edit-done" onclick="saveDamage()">Terminé</button>
+  <div class="edit-top">
+    <span class="cancel" onclick="goResult()">Annuler</span>
+    <h2>Modifier les défauts</h2>
+    <button class="done" onclick="saveDamageEdit()">Terminé</button>
   </div>
 
-  <div class="damage-img-wrap" id="damage-img-wrap">
-    <img id="damage-img" src="" alt="card">
-    <div class="defect-click-overlay" id="defect-overlay" onclick="addDefectAt(event)"></div>
-    <div id="damage-defects"></div>
+  <div class="edit-face-tabs">
+    <div class="edit-face-tab active" data-face="front" onclick="switchDmgFace('front')">Recto</div>
+    <div class="edit-face-tab" data-face="back" onclick="switchDmgFace('back')">Verso</div>
   </div>
 
-  <div class="damage-controls">
-    <div class="damage-toolbar">
-      <div class="damage-toolbar-title">🔴 Défauts <span id="defect-count" style="color:var(--muted);font-size:14px;font-weight:400">0</span></div>
-      <button class="undo-btn" onclick="undoDefect()">↩ Annuler</button>
-    </div>
-    <div class="damage-btns">
-      <button class="dmg-btn" onclick="addDefectCenter()">+ Ajouter</button>
-      <button class="dmg-btn" onclick="removeLastDefect()">— Retirer</button>
-    </div>
-    <div class="size-toggle">
-      <button class="size-opt active" onclick="setSize('sm',this)">· Petit</button>
-      <button class="size-opt" onclick="setSize('md',this)">• Moyen</button>
-      <button class="size-opt" onclick="setSize('lg',this)">● Grand</button>
-    </div>
-    <div class="dmg-hint">Tape sur la carte pour placer un défaut</div>
+  <div class="edit-img-wrap" id="dmg-wrap">
+    <img id="dmg-img" src="">
+  </div>
+
+  <div class="dmg-toolbar">
+    <div class="ttl">🔴 Défauts <span class="cnt" id="dmg-count">0</span></div>
+    <button class="dmg-undo" onclick="undoDamage()">↩ Annuler</button>
+  </div>
+  <div class="size-pick">
+    <button class="active" onclick="setDmgSize('sm',event)">· Petit</button>
+    <button onclick="setDmgSize('md',event)">• Moyen</button>
+    <button onclick="setDmgSize('lg',event)">● Grand</button>
+  </div>
+  <div class="hint">Tape sur la carte pour placer un défaut.<br>Tape sur un défaut existant pour le retirer.</div>
+</div>
+
+<!-- API key modal -->
+<div class="modal-bg" id="api-modal">
+  <div class="box">
+    <h2>Clé API Anthropic</h2>
+    <p>Nécessaire pour l'analyse IA. Stockée uniquement sur ton iPhone, jamais envoyée ailleurs. Récupère-la sur <b>console.anthropic.com</b>.</p>
+    <input id="api-input" type="password" placeholder="sk-ant-api03-..." autocomplete="off">
+    <button class="btn-primary" onclick="saveApiKey()">Continuer</button>
+    <button class="btn-text" onclick="closeApi()">Annuler</button>
   </div>
 </div>
 
-<!-- API KEY MODAL -->
-<div id="api-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;align-items:center;justify-content:center;">
-  <div style="background:var(--surface);border-radius:20px;padding:28px 24px;margin:20px;max-width:380px;width:100%;">
-    <div style="font-size:18px;font-weight:600;margin-bottom:8px;">Clé API Anthropic</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Nécessaire pour l'analyse IA. Elle n'est jamais envoyée ailleurs.</div>
-    <input id="api-key-input" type="password" placeholder="sk-ant-..." style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;margin-bottom:14px;outline:none;">
-    <button onclick="saveApiKey()" style="width:100%;height:48px;background:var(--accent);border:none;border-radius:14px;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;">Continuer</button>
-  </div>
-</div>
+<div class="toast" id="toast"></div>
 
 <script>
 // ===== STATE =====
-let apiKey = localStorage.getItem('pg_apikey') || '';
-let frontImg = null, backImg = null;
-let showingFront = true;
-let currentGrader = 'psa';
-let defects = [];
-let defectSize = 'sm';
-let centering = { top: 46, bottom: 54, left: 48, right: 52 };
-let analysisResult = null;
-let grades = JSON.parse(localStorage.getItem('pg_grades') || '[]');
-let cameraStream = null;
-let currentCamFace = 'front';
+let apiKey = localStorage.getItem('pg_key') || '';
+let imgFront = null, imgBack = null;
+let camFace = 'front'; // which face we're currently capturing
+let camStream = null;
 
-// ===== NAVIGATION =====
+// analysis is per-face (the IA returns card bbox for each face independently)
+let analysis = {
+  name: '', set: '', price_usd: 0,
+  psa: {grade:0, confidence:0}, bgs: {grade:0, confidence:0}, cgc: {grade:0, confidence:0},
+  scores: {centering:0, corners:0, edges:0, surface:0},
+  front: { bbox: null, margins: null, defects: [] },
+  back:  { bbox: null, margins: null, defects: [] }
+};
+
+let currentGrader = 'psa';
+let currentFace = 'front';      // which face is shown in result
+let editFace = 'front';         // which face in edit centering
+let dmgFace = 'front';          // which face in edit damage
+let dmgSize = 'sm';
+let dmgHistory = [];            // for undo
+
+let grades = JSON.parse(localStorage.getItem('pg_grades_v2') || '[]');
+
+// ===== UTILS =====
+function $(s) { return document.querySelector(s); }
+function $$(s) { return document.querySelectorAll(s); }
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  $$('.screen').forEach(s=>s.classList.remove('active'));
+  $('#'+id).classList.add('active');
 }
-function goHome() {
-  stopCamera();
-  renderGradesList();
-  showScreen('home');
+function showToast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
 }
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+// ===== NAV =====
+function goHome() { stopCamera(); renderGrades(); showScreen('home'); }
 function goCamera() {
+  imgFront = null; imgBack = null; camFace = 'front';
+  $('#tab-f').classList.add('active'); $('#tab-f').classList.remove('captured');
+  $('#tab-b').classList.remove('active'); $('#tab-b').classList.remove('captured');
+  $('#cam-instr').innerHTML = "Prends une photo nette du <b>recto</b>";
   showScreen('camera');
   startCamera();
 }
-function goResult() { showScreen('result'); }
+function goResult() {
+  showScreen('result');
+  renderResult();
+}
 function goEditCenter() {
-  document.getElementById('center-edit-img').src = showingFront ? frontImg : backImg;
-  renderCenteringEdit();
+  editFace = currentFace;
+  $$('.edit-face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===editFace));
+  $('#edit-img').src = (editFace==='front' ? imgFront : imgBack) || imgFront;
+  $('#edit-img').onload = renderEditCenterOverlay;
+  if ($('#edit-img').complete) renderEditCenterOverlay();
   showScreen('edit-center');
 }
 function goEditDamage() {
-  document.getElementById('damage-img').src = showingFront ? frontImg : backImg;
-  renderDamageDefects();
+  dmgFace = currentFace;
+  $$('.edit-face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===dmgFace));
+  $('#dmg-img').src = (dmgFace==='front' ? imgFront : imgBack) || imgFront;
+  $('#dmg-img').onload = renderDamageOverlay;
+  if ($('#dmg-img').complete) renderDamageOverlay();
+  dmgHistory = [];
   showScreen('edit-damage');
 }
 
 // ===== CAMERA =====
 async function startCamera() {
   try {
-    cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }
+    camStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' }, width: {ideal:1920}, height: {ideal:1080} },
+      audio: false
     });
-    document.getElementById('cam-preview').srcObject = cameraStream;
+    $('#cam-video').srcObject = camStream;
   } catch(e) {
-    console.log('Camera not available:', e);
+    console.error('Camera error:', e);
+    showToast('Caméra inaccessible — utilise la galerie');
   }
 }
 function stopCamera() {
-  if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
+  if (camStream) camStream.getTracks().forEach(t=>t.stop());
+  camStream = null;
 }
-function shootPhoto() {
-  const video = document.getElementById('cam-preview');
-  const canvas = document.getElementById('cam-canvas');
-  canvas.width = video.videoWidth || 640;
-  canvas.height = video.videoHeight || 480;
-  canvas.getContext('2d').drawImage(video, 0, 0);
-  const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-  if (currentCamFace === 'front') {
-    frontImg = dataUrl;
-    document.getElementById('tab-front').style.background = 'rgba(232,93,42,0.3)';
-    currentCamFace = 'back';
-    document.getElementById('tab-front').classList.remove('active');
-    document.getElementById('tab-back').classList.add('active');
-    document.getElementById('cam-instruction').textContent = 'Prends une photo nette du verso de la carte';
+function restartCamera() { stopCamera(); startCamera(); }
+function takePhoto() {
+  const v = $('#cam-video');
+  if (!v.videoWidth) { openGallery(); return; }
+  const c = $('#cam-canvas');
+  c.width = v.videoWidth; c.height = v.videoHeight;
+  c.getContext('2d').drawImage(v, 0, 0);
+  handleCaptured(c.toDataURL('image/jpeg', 0.92));
+}
+function openGallery() {
+  (camFace === 'front' ? $('#file-front') : $('#file-back')).click();
+}
+$('#file-front').addEventListener('change', e=>readFile(e, 'front'));
+$('#file-back').addEventListener('change', e=>readFile(e, 'back'));
+function readFile(e, face) {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => { camFace = face; handleCaptured(ev.target.result); };
+  r.readAsDataURL(f);
+}
+function handleCaptured(dataUrl) {
+  if (camFace === 'front') {
+    imgFront = dataUrl;
+    $('#tab-f').classList.add('captured');
+    $('#tab-f').classList.remove('active');
+    $('#tab-b').classList.add('active');
+    camFace = 'back';
+    $('#cam-instr').innerHTML = "Prends une photo nette du <b>verso</b>";
+    $('#thumb-prev').innerHTML = '<img src="'+dataUrl+'">';
   } else {
-    backImg = dataUrl;
+    imgBack = dataUrl;
+    $('#tab-b').classList.add('captured');
     stopCamera();
-    startAnalysis();
+    if (!apiKey) {
+      $('#api-modal').classList.add('show');
+      window._afterKey = startAnalysis;
+    } else {
+      startAnalysis();
+    }
   }
 }
-function recalibrate() { stopCamera(); startCamera(); }
-function openGallery() {
-  const inp = currentCamFace === 'front' ? document.getElementById('file-input-front') : document.getElementById('file-input-back');
-  inp.click();
-}
-document.getElementById('file-input-front').addEventListener('change', e => {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    frontImg = ev.target.result;
-    document.getElementById('tab-front').style.background = 'rgba(232,93,42,0.3)';
-    currentCamFace = 'back';
-    document.getElementById('tab-front').classList.remove('active');
-    document.getElementById('tab-back').classList.add('active');
-    document.getElementById('cam-instruction').textContent = 'Prends une photo nette du verso de la carte';
-  };
-  reader.readAsDataURL(file);
-});
-document.getElementById('file-input-back').addEventListener('change', e => {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    backImg = ev.target.result;
-    stopCamera();
-    startAnalysis();
-  };
-  reader.readAsDataURL(file);
-});
 
 // ===== API KEY =====
-function checkApiKey(cb) {
-  if (apiKey) { cb(); return; }
-  document.getElementById('api-modal').style.display = 'flex';
-  window._apiKeyCallback = cb;
-}
 function saveApiKey() {
-  const k = document.getElementById('api-key-input').value.trim();
-  if (!k) return;
-  apiKey = k;
-  localStorage.setItem('pg_apikey', k);
-  document.getElementById('api-modal').style.display = 'none';
-  if (window._apiKeyCallback) window._apiKeyCallback();
+  const v = $('#api-input').value.trim();
+  if (!v) return;
+  apiKey = v;
+  localStorage.setItem('pg_key', v);
+  $('#api-modal').classList.remove('show');
+  if (window._afterKey) { window._afterKey(); window._afterKey = null; }
+}
+function closeApi() { $('#api-modal').classList.remove('show'); }
+function resetApiKey() {
+  if (confirm('Remplacer la clé API ?')) {
+    localStorage.removeItem('pg_key');
+    apiKey = '';
+    $('#api-input').value = '';
+    $('#api-modal').classList.add('show');
+  }
 }
 
 // ===== ANALYSIS =====
+const ANALYZE_STEPS = [
+  'Identification de la carte...',
+  'Détection des bords...',
+  'Analyse du centrage...',
+  'Recherche des défauts...',
+  'Calcul des grades PSA/BGS/CGC...'
+];
+
 async function startAnalysis() {
-  checkApiKey(doAnalysis);
-}
-
-const steps = ['Identification de la carte...', 'Analyse du centrage...', 'Détection des défauts...', 'Calcul du grade PSA/BGS/CGC...'];
-let stepIdx = 0;
-
-async function doAnalysis() {
   showScreen('analyzing');
-  stepIdx = 0;
-  const interval = setInterval(() => {
-    stepIdx = Math.min(stepIdx + 1, steps.length - 1);
-    document.getElementById('analyze-step').textContent = steps[stepIdx];
-  }, 1400);
+  let i = 0;
+  const tick = setInterval(()=>{
+    i = Math.min(i+1, ANALYZE_STEPS.length-1);
+    $('#analyze-step').textContent = ANALYZE_STEPS[i];
+  }, 1300);
 
   try {
-    const frontB64 = frontImg.split(',')[1];
-    const backB64 = backImg ? backImg.split(',')[1] : null;
-
-    const content = [
-      { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: frontB64 } },
-      { type: 'text', text: 'This is the FRONT of the Pokémon card.' }
-    ];
-    if (backB64) {
-      content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: backB64 } });
-      content.push({ type: 'text', text: 'This is the BACK of the Pokémon card.' });
-    }
-    content.push({ type: 'text', text: `Analyze this Pokémon TCG card for grading. Respond ONLY with a valid JSON object, no markdown, no backticks:
-{
-  "name": "card name",
-  "set": "set name • language",
-  "centering": { "top": 46.5, "bottom": 53.5, "left": 48.2, "right": 51.8 },
-  "scores": { "centering": 8.5, "corners": 9.0, "edges": 8.0, "surface": 9.5 },
-  "psa": { "grade": 8, "confidence": 72 },
-  "bgs": { "grade": 8.5, "confidence": 68 },
-  "cgc": { "grade": 8.5, "confidence": 70 },
-  "defects": [
-    { "x": 15, "y": 72, "description": "corner wear" },
-    { "x": 82, "y": 18, "description": "surface scratch" }
-  ],
-  "price_usd": 45
-}
-centering values are percentages of border width (top+bottom=100, left+right=100). defects x/y are % of image size. Be accurate.` });
-
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content }]
-      })
-    });
-
-    clearInterval(interval);
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-
-    let text = data.content[0].text.trim();
-    text = text.replace(/```json|```/g, '').trim();
-    analysisResult = JSON.parse(text);
-    defects = (analysisResult.defects || []).map(d => ({ ...d, size: 'sm' }));
-    centering = analysisResult.centering || centering;
-    saveGrade();
-    renderResult();
-    showScreen('result');
-  } catch(err) {
-    clearInterval(interval);
-    console.error(err);
-    // fallback demo
-    analysisResult = {
-      name: 'Carte Pokémon', set: 'Set inconnu • FR',
-      centering: { top: 46.4, bottom: 53.6, left: 48.4, right: 51.6 },
-      scores: { centering: 7, corners: 8, edges: 8.5, surface: 9 },
-      psa: { grade: 7, confidence: 65 },
-      bgs: { grade: 7.5, confidence: 61 },
-      cgc: { grade: 7.5, confidence: 63 },
-      defects: [{ x: 20, y: 75, description: 'usure coin' }, { x: 78, y: 22, description: 'rayure' }],
-      price_usd: 35
+    const result = await callClaudeVision();
+    clearInterval(tick);
+    analysis = {
+      ...analysis,
+      ...result,
+      front: { bbox: result.front.bbox, margins: result.front.margins, defects: (result.front.defects||[]).map(d=>({...d, size:'sm'})) },
+      back:  { bbox: result.back.bbox,  margins: result.back.margins,  defects: (result.back.defects ||[]).map(d=>({...d, size:'sm'})) }
     };
-    defects = analysisResult.defects.map(d => ({ ...d, size: 'sm' }));
-    centering = analysisResult.centering;
-    saveGrade();
-    renderResult();
-    showScreen('result');
+    saveToHistory();
+    goResult();
+  } catch(err) {
+    clearInterval(tick);
+    console.error(err);
+    showToast('Erreur IA — mode démo activé');
+    // demo fallback
+    analysis = {
+      name: 'Carte Pokémon', set: 'Set inconnu • FR', price_usd: 50,
+      psa: {grade:7, confidence:65}, bgs: {grade:7.5, confidence:62}, cgc: {grade:7.5, confidence:64},
+      scores: {centering:7, corners:8, edges:8, surface:9},
+      front: {
+        bbox: { x:10, y:8, w:80, h:84 },
+        margins: { top:46.5, bottom:53.5, left:48.2, right:51.8 },
+        defects: [{x:20,y:75,size:'sm'},{x:80,y:25,size:'sm'}]
+      },
+      back: {
+        bbox: { x:10, y:8, w:80, h:84 },
+        margins: { top:48, bottom:52, left:49, right:51 },
+        defects: []
+      }
+    };
+    saveToHistory();
+    goResult();
   }
 }
 
-// ===== RENDER RESULT =====
+async function callClaudeVision() {
+  const frontB64 = imgFront.split(',')[1];
+  const backB64 = imgBack ? imgBack.split(',')[1] : null;
+
+  const content = [
+    { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: frontB64 } },
+    { type: 'text', text: 'FRONT of the Pokémon card.' }
+  ];
+  if (backB64) {
+    content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: backB64 } });
+    content.push({ type: 'text', text: 'BACK of the Pokémon card.' });
+  }
+  content.push({ type: 'text', text: `Analyze these Pokémon TCG card photos for grading. Return ONLY a valid JSON object, no markdown, no backticks, no commentary:
+
+{
+  "name": "card name",
+  "set": "set name • language (e.g. 'Base Set • Japanese')",
+  "price_usd": 50,
+  "psa": { "grade": 8, "confidence": 72 },
+  "bgs": { "grade": 8.5, "confidence": 68 },
+  "cgc": { "grade": 8.5, "confidence": 70 },
+  "scores": { "centering": 8.5, "corners": 9.0, "edges": 8.0, "surface": 9.5 },
+  "front": {
+    "bbox": { "x": 12, "y": 8, "w": 76, "h": 84 },
+    "margins": { "top": 46.5, "bottom": 53.5, "left": 48.2, "right": 51.8 },
+    "defects": [
+      { "x": 15, "y": 72, "desc": "corner wear" }
+    ]
+  },
+  "back": {
+    "bbox": { "x": 12, "y": 8, "w": 76, "h": 84 },
+    "margins": { "top": 48, "bottom": 52, "left": 49, "right": 51 },
+    "defects": []
+  }
+}
+
+CRITICAL:
+- "bbox" is the bounding box of the CARD itself inside the photo (x, y, width, height in % of photo). Detect precisely where the card edges are.
+- "margins" is the centering ratio of the inner art frame within the card border: top+bottom=100, left+right=100. e.g. perfectly centered = 50/50/50/50. Off-center top = top<50, bottom>50.
+- "defects" x/y are in % of the photo (not the card). Place dots on visible scratches, wear, dents.
+- Grades and confidence must reflect the actual card condition visible.` });
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1200,
+      messages: [{ role: 'user', content }]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  let txt = data.content[0].text.trim().replace(/```json|```/g, '').trim();
+  return JSON.parse(txt);
+}
+
+// ===== RESULT RENDERING =====
 function renderResult() {
-  const r = analysisResult;
-  document.getElementById('res-name').textContent = r.name;
-  document.getElementById('res-set').textContent = r.set;
-  document.getElementById('res-img').src = frontImg;
-  document.getElementById('card-price').textContent = r.price_usd ? `+$${r.price_usd}` : '';
-
-  updateGraderDisplay();
-  updateCenteringOverlay();
-  renderResultDefects();
+  const a = analysis;
+  $('#r-name').textContent = a.name;
+  $('#r-meta').textContent = a.set;
+  $('#r-price').textContent = a.price_usd ? '+$'+a.price_usd : '';
+  $('#img-front').src = imgFront || '';
+  $('#img-back').src = imgBack || imgFront || '';
+  $('#sc-c').textContent = a.scores.centering;
+  $('#sc-co').textContent = a.scores.corners;
+  $('#sc-e').textContent = a.scores.edges;
+  $('#sc-s').textContent = a.scores.surface;
+  updateGrader();
+  // wait for images to load then draw overlay
+  const imgF = $('#img-front');
+  const imgB = $('#img-back');
+  if (imgF.complete) drawOverlay('front'); else imgF.onload = ()=>drawOverlay('front');
+  if (imgB.complete) drawOverlay('back');  else imgB.onload  = ()=>drawOverlay('back');
 }
 
-function updateGraderDisplay() {
-  const r = analysisResult;
-  const g = r[currentGrader];
-  const color = currentGrader === 'psa' ? 'var(--psa)' : currentGrader === 'bgs' ? 'var(--bgs)' : 'var(--cgc)';
-  document.getElementById('res-grade').textContent = g.grade;
-  document.getElementById('res-grader-label').textContent = currentGrader.toUpperCase();
-  document.getElementById('res-grader-label').style.color = color;
-  document.getElementById('res-pct').textContent = g.confidence + '%';
-  document.getElementById('res-pct').style.color = color;
+function updateGrader() {
+  const g = analysis[currentGrader];
+  const color = currentGrader==='psa'?'var(--psa)':currentGrader==='bgs'?'var(--bgs)':'var(--cgc)';
+  $('#r-grade').textContent = g.grade;
+  $('#r-glabel').textContent = currentGrader.toUpperCase();
+  $('#r-glabel').style.color = color;
+  $('#r-pct').textContent = g.confidence + '%';
+  $('#r-pct').style.color = color;
+  $$('.gpill').forEach(p=>p.classList.remove('active'));
+  $('.gpill.'+currentGrader).classList.add('active');
+}
+function setGrader(g) { currentGrader = g; updateGrader(); }
 
-  const s = r.scores;
-  document.getElementById('sc-centering').textContent = s.centering;
-  document.getElementById('sc-corners').textContent = s.corners;
-  document.getElementById('sc-edges').textContent = s.edges;
-  document.getElementById('sc-surface').textContent = s.surface;
-
-  document.querySelectorAll('.grader-pill').forEach(p => p.classList.remove('active'));
-  document.querySelector(`.grader-pill.${currentGrader}`).classList.add('active');
+function showFace(face) {
+  currentFace = face;
+  $$('.face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===face));
+  $$('.face-page').forEach(p=>p.classList.toggle('active', p.dataset.face===face));
+  drawOverlay(face);
 }
 
-function switchGrader(g) { currentGrader = g; updateGraderDisplay(); }
-
-function updateCenteringOverlay() {
-  const c = centering;
-  document.getElementById('pct-top').textContent = c.top.toFixed(1) + '%';
-  document.getElementById('pct-bottom').textContent = c.bottom.toFixed(1) + '%';
-  document.getElementById('pct-left').textContent = c.left.toFixed(1) + '%';
-  document.getElementById('pct-right').textContent = c.right.toFixed(1) + '%';
+function toggleScores() {
+  const g = $('#score-grid');
+  g.style.display = g.style.display==='none' ? 'grid' : 'none';
 }
 
-function renderResultDefects() {
-  const wrap = document.getElementById('result-defects');
-  wrap.innerHTML = '';
-  defects.forEach(d => {
+// draw the overlay for a face: outer card box + inner margins box + 4 orange bars + labels + defects
+function drawOverlay(face) {
+  const wrap = $('#face-area-'+face);
+  const img = $('#img-'+face);
+  if (!img.complete || !img.naturalWidth) return;
+  const data = analysis[face];
+  if (!data || !data.bbox) return;
+
+  // remove old overlay (but keep <img> and pills)
+  wrap.querySelectorAll('.overlay-layer').forEach(n=>n.remove());
+
+  // size of rendered img
+  const rect = img.getBoundingClientRect();
+  const wrapRect = wrap.getBoundingClientRect();
+  // we draw overlay inside wrap, positioned relative to image
+  const offsetTop = rect.top - wrapRect.top;
+  const offsetLeft = rect.left - wrapRect.left;
+
+  const layer = document.createElement('div');
+  layer.className = 'overlay-layer';
+  layer.style.cssText = `position:absolute;top:${offsetTop}px;left:${offsetLeft}px;width:${rect.width}px;height:${rect.height}px;pointer-events:none;`;
+  wrap.appendChild(layer);
+
+  const bbox = data.bbox;
+  // outer card rectangle, in pixels relative to image
+  const cardL = (bbox.x/100)*rect.width;
+  const cardT = (bbox.y/100)*rect.height;
+  const cardW = (bbox.w/100)*rect.width;
+  const cardH = (bbox.h/100)*rect.height;
+
+  // outer border
+  const outer = document.createElement('div');
+  outer.style.cssText = `position:absolute;left:${cardL}px;top:${cardT}px;width:${cardW}px;height:${cardH}px;border:1.5px solid var(--red);border-radius:6px;`;
+  layer.appendChild(outer);
+
+  // inner box from margins
+  const m = data.margins || {top:50,bottom:50,left:50,right:50};
+  // margins: top is the fraction of (top+bottom border thickness) on top.
+  // visualize: orange bar on top = thickness of top border. Let's use a small fraction of card height for border thickness in pixels.
+  const borderTopFrac = m.top / 100;  // 0.5 = centered
+  const borderBotFrac = m.bottom / 100;
+  const borderLeftFrac = m.left / 100;
+  const borderRightFrac = m.right / 100;
+  // total border thickness as fraction of card size (assume ~8% of card width is the border zone)
+  const totalBorderH = cardH * 0.10;  // 10% of card height is total top+bottom border
+  const totalBorderW = cardW * 0.10;
+  const tT = borderTopFrac * totalBorderH;     // pixels from card top edge to inner top
+  const tB = borderBotFrac * totalBorderH;
+  const tL = borderLeftFrac * totalBorderW;
+  const tR = borderRightFrac * totalBorderW;
+
+  // inner box
+  const innerL = cardL + tL;
+  const innerT = cardT + tT;
+  const innerR = cardL + cardW - tR;
+  const innerB = cardT + cardH - tB;
+  const inner = document.createElement('div');
+  inner.style.cssText = `position:absolute;left:${innerL}px;top:${innerT}px;width:${innerR-innerL}px;height:${innerB-innerT}px;border:1.5px solid var(--red);border-radius:4px;`;
+  layer.appendChild(inner);
+
+  // orange bars (top, bottom, left, right): represent the BORDER zone between outer and inner
+  // top bar
+  const barT = document.createElement('div');
+  barT.style.cssText = `position:absolute;left:${innerL}px;top:${cardT + tT*0.3}px;width:${innerR-innerL}px;height:6px;background:var(--orange);border-radius:3px;`;
+  layer.appendChild(barT);
+  // bottom bar
+  const barB = document.createElement('div');
+  barB.style.cssText = `position:absolute;left:${innerL}px;top:${innerB + tB*0.3}px;width:${innerR-innerL}px;height:6px;background:var(--orange);border-radius:3px;`;
+  layer.appendChild(barB);
+  // left bar
+  const barL = document.createElement('div');
+  barL.style.cssText = `position:absolute;left:${cardL + tL*0.3}px;top:${innerT}px;width:6px;height:${innerB-innerT}px;background:var(--orange);border-radius:3px;`;
+  layer.appendChild(barL);
+  // right bar
+  const barR = document.createElement('div');
+  barR.style.cssText = `position:absolute;left:${innerR + tR*0.3}px;top:${innerT}px;width:6px;height:${innerB-innerT}px;background:var(--orange);border-radius:3px;`;
+  layer.appendChild(barR);
+
+  // labels with %
+  function lbl(text, top, left, cx, cy) {
+    const e = document.createElement('div');
+    e.style.cssText = `position:absolute;left:${left}px;top:${top}px;transform:translate(${cx},${cy});background:rgba(0,0,0,0.78);color:#fff;font-size:11px;font-weight:700;padding:3px 7px;border-radius:5px;white-space:nowrap;`;
+    e.textContent = text;
+    layer.appendChild(e);
+  }
+  lbl(m.top.toFixed(1)+'%', cardT + tT*0.3 + 3, (innerL+innerR)/2, '-50%', '0');
+  lbl(m.bottom.toFixed(1)+'%', innerB + tB*0.3 - 18, (innerL+innerR)/2, '-50%', '0');
+  lbl(m.left.toFixed(1)+'%', (innerT+innerB)/2 - 9, cardL + tL*0.3 + 9, '0', '0');
+  lbl(m.right.toFixed(1)+'%', (innerT+innerB)/2 - 9, innerR + tR*0.3 - 50, '0', '0');
+
+  // defects
+  (data.defects||[]).forEach(d=>{
+    const sz = d.size==='lg'?32 : d.size==='md'?22 : 14;
+    const dx = (d.x/100)*rect.width;
+    const dy = (d.y/100)*rect.height;
     const el = document.createElement('div');
-    el.className = 'defect-marker';
-    el.style.left = d.x + '%';
-    el.style.top = d.y + '%';
-    el.style.transform = 'translate(-50%,-50%)';
-    wrap.appendChild(el);
+    el.style.cssText = `position:absolute;left:${dx}px;top:${dy}px;width:${sz}px;height:${sz}px;margin:${-sz/2}px 0 0 ${-sz/2}px;border:2px solid var(--red);border-radius:3px;background:rgba(255,77,77,0.15);`;
+    layer.appendChild(el);
   });
 }
 
-function flipCard() {
-  showingFront = !showingFront;
-  document.getElementById('res-img').src = showingFront ? frontImg : (backImg || frontImg);
-}
-
-function toggleDetails() {
-  const grid = document.getElementById('scores-grid');
-  grid.style.display = grid.style.display === 'none' ? 'grid' : 'none';
-}
+// redraw on resize
+window.addEventListener('resize', ()=>{
+  if ($('#result').classList.contains('active')) {
+    drawOverlay('front'); drawOverlay('back');
+  }
+});
 
 // ===== EDIT CENTERING =====
-function renderCenteringEdit() {
-  const wrap = document.getElementById('center-edit-wrap');
-  const h = wrap.offsetHeight || 360;
-  const w = wrap.offsetWidth || 380;
-
-  const topPx = (centering.top / 100) * h;
-  const bottomPx = h - (centering.bottom / 100) * h;
-  const leftPx = (centering.left / 100) * w;
-  const rightPx = w - (centering.right / 100) * w;
-
-  const et = document.getElementById('edge-top');
-  const eb = document.getElementById('edge-bottom');
-  const el = document.getElementById('edge-left');
-  const er = document.getElementById('edge-right');
-
-  et.style.top = topPx + 'px';
-  eb.style.bottom = (h - (h - bottomPx)) + 'px';
-  el.style.left = leftPx + 'px';
-  er.style.right = (w - (w - rightPx)) + 'px';
-
-  updateCenterLabels();
-  updateInnerBorder();
-
-  const slHB = document.getElementById('slider-hb');
-  const slLR = document.getElementById('slider-lr');
-  slHB.value = centering.top;
-  slLR.value = centering.left;
-
-  slHB.oninput = e => {
-    centering.top = parseFloat(e.target.value);
-    centering.bottom = 100 - centering.top;
-    const pct = centering.top / 100;
-    document.getElementById('edge-top').style.top = (pct * h) + 'px';
-    updateCenterLabels(); updateInnerBorder();
-  };
-  slLR.oninput = e => {
-    centering.left = parseFloat(e.target.value);
-    centering.right = 100 - centering.left;
-    const pct = centering.left / 100;
-    document.getElementById('edge-left').style.left = (pct * w) + 'px';
-    updateCenterLabels(); updateInnerBorder();
-  };
+function switchEditFace(face) {
+  editFace = face;
+  $$('.edit-face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===face));
+  $('#edit-img').src = (face==='front' ? imgFront : imgBack) || imgFront;
+  $('#edit-img').onload = renderEditCenterOverlay;
+  if ($('#edit-img').complete) renderEditCenterOverlay();
 }
 
-function updateCenterLabels() {
-  document.getElementById('ctrl-hb').textContent = centering.top.toFixed(1) + ' / ' + centering.bottom.toFixed(1);
-  document.getElementById('ctrl-lr').textContent = centering.left.toFixed(1) + ' / ' + centering.right.toFixed(1);
+function renderEditCenterOverlay() {
+  const wrap = $('#edit-wrap');
+  const img = $('#edit-img');
+  // remove old
+  wrap.querySelectorAll('.edit-layer').forEach(n=>n.remove());
 
-  const wrap = document.getElementById('center-edit-wrap');
-  const h = wrap.offsetHeight || 360;
-  const w = wrap.offsetWidth || 380;
+  const rect = img.getBoundingClientRect();
+  const wrapRect = wrap.getBoundingClientRect();
+  const offsetTop = rect.top - wrapRect.top;
+  const offsetLeft = rect.left - wrapRect.left;
 
-  const lt = document.getElementById('lbl-top');
-  const lb = document.getElementById('lbl-bottom');
-  const ll = document.getElementById('lbl-left');
-  const lr = document.getElementById('lbl-right');
+  const data = analysis[editFace];
+  if (!data || !data.bbox) return;
+  const bbox = data.bbox;
+  const m = data.margins || {top:50,bottom:50,left:50,right:50};
 
-  lt.style.cssText = `top:${(centering.top/100)*h - 20}px;left:50%;transform:translateX(-50%)`;
-  lt.textContent = centering.top.toFixed(1) + '%';
-  lb.style.cssText = `bottom:${(centering.bottom/100)*h - 20}px;left:50%;transform:translateX(-50%)`;
-  lb.textContent = centering.bottom.toFixed(1) + '%';
-  ll.style.cssText = `left:${(centering.left/100)*w + 6}px;top:50%;transform:translateY(-50%)`;
-  ll.textContent = centering.left.toFixed(1) + '%';
-  lr.style.cssText = `right:${(centering.right/100)*w + 6}px;top:50%;transform:translateY(-50%)`;
-  lr.textContent = centering.right.toFixed(1) + '%';
+  const cardL = offsetLeft + (bbox.x/100)*rect.width;
+  const cardT = offsetTop + (bbox.y/100)*rect.height;
+  const cardW = (bbox.w/100)*rect.width;
+  const cardH = (bbox.h/100)*rect.height;
+  const totalBorderH = cardH * 0.10;
+  const totalBorderW = cardW * 0.10;
+
+  const layer = document.createElement('div');
+  layer.className = 'edit-layer';
+  layer.style.cssText = `position:absolute;inset:0;`;
+  wrap.appendChild(layer);
+
+  // outer border
+  const outer = document.createElement('div');
+  outer.style.cssText = `position:absolute;left:${cardL}px;top:${cardT}px;width:${cardW}px;height:${cardH}px;border:1.5px solid var(--red);border-radius:6px;pointer-events:none;`;
+  layer.appendChild(outer);
+
+  function recompute() {
+    const tT = (m.top/100) * totalBorderH;
+    const tB = (m.bottom/100) * totalBorderH;
+    const tL = (m.left/100) * totalBorderW;
+    const tR = (m.right/100) * totalBorderW;
+    const innerL = cardL + tL;
+    const innerT = cardT + tT;
+    const innerR = cardL + cardW - tR;
+    const innerB = cardT + cardH - tB;
+
+    inner.style.left = innerL+'px'; inner.style.top = innerT+'px';
+    inner.style.width = (innerR-innerL)+'px'; inner.style.height = (innerB-innerT)+'px';
+
+    barT.style.left = innerL+'px'; barT.style.top = (cardT + tT*0.3)+'px'; barT.style.width = (innerR-innerL)+'px';
+    barB.style.left = innerL+'px'; barB.style.top = (innerB + tB*0.3)+'px'; barB.style.width = (innerR-innerL)+'px';
+    barL.style.left = (cardL + tL*0.3)+'px'; barL.style.top = innerT+'px'; barL.style.height = (innerB-innerT)+'px';
+    barR.style.left = (innerR + tR*0.3)+'px'; barR.style.top = innerT+'px'; barR.style.height = (innerB-innerT)+'px';
+
+    lblT.style.left = ((innerL+innerR)/2)+'px'; lblT.style.top = (cardT + tT*0.3 - 22)+'px'; lblT.textContent = m.top.toFixed(1)+'%';
+    lblB.style.left = ((innerL+innerR)/2)+'px'; lblB.style.top = (innerB + tB*0.3 + 10)+'px'; lblB.textContent = m.bottom.toFixed(1)+'%';
+    lblL.style.left = (cardL + tL*0.3 + 12)+'px'; lblL.style.top = ((innerT+innerB)/2 - 9)+'px'; lblL.textContent = m.left.toFixed(1)+'%';
+    lblR.style.left = (innerR + tR*0.3 - 50)+'px'; lblR.style.top = ((innerT+innerB)/2 - 9)+'px'; lblR.textContent = m.right.toFixed(1)+'%';
+  }
+
+  const inner = document.createElement('div');
+  inner.style.cssText = `position:absolute;border:1.5px solid var(--red);border-radius:4px;pointer-events:none;`;
+  layer.appendChild(inner);
+
+  const barT = document.createElement('div');
+  barT.style.cssText = `position:absolute;height:8px;background:var(--orange);border-radius:4px;cursor:ns-resize;touch-action:none;`;
+  barT.dataset.dir = 'top'; layer.appendChild(barT);
+  const barB = document.createElement('div');
+  barB.style.cssText = `position:absolute;height:8px;background:var(--orange);border-radius:4px;cursor:ns-resize;touch-action:none;`;
+  barB.dataset.dir = 'bottom'; layer.appendChild(barB);
+  const barL = document.createElement('div');
+  barL.style.cssText = `position:absolute;width:8px;background:var(--orange);border-radius:4px;cursor:ew-resize;touch-action:none;`;
+  barL.dataset.dir = 'left'; layer.appendChild(barL);
+  const barR = document.createElement('div');
+  barR.style.cssText = `position:absolute;width:8px;background:var(--orange);border-radius:4px;cursor:ew-resize;touch-action:none;`;
+  barR.dataset.dir = 'right'; layer.appendChild(barR);
+
+  const lblT = document.createElement('div');
+  const lblB = document.createElement('div');
+  const lblL = document.createElement('div');
+  const lblR = document.createElement('div');
+  [lblT,lblB,lblL,lblR].forEach(l=>{
+    l.style.cssText = `position:absolute;background:rgba(0,0,0,0.85);color:#fff;font-size:11px;font-weight:700;padding:3px 7px;border-radius:5px;transform:translateX(-50%);pointer-events:none;white-space:nowrap;`;
+    layer.appendChild(l);
+  });
+  // left/right labels don't translate -50% horizontally
+  lblL.style.transform = ''; lblR.style.transform = '';
+
+  recompute();
+
+  // drag handlers
+  function startDrag(bar) {
+    let dragging = false;
+    bar.addEventListener('pointerdown', e => {
+      dragging = true; bar.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+    bar.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dir = bar.dataset.dir;
+      if (dir === 'top' || dir === 'bottom') {
+        // y relative to card top
+        const wrapTop = wrap.getBoundingClientRect().top;
+        const y = e.clientY - wrapTop - cardT;
+        // y is distance from card top edge. constrain so dragging is sensible.
+        // We map y to top% : if y in [0, totalBorderH] for top bar, that's m.top in [0,100]
+        if (dir === 'top') {
+          let pct = clamp((y / totalBorderH) * 100, 5, 95);
+          m.top = pct; m.bottom = 100 - pct;
+        } else {
+          // bottom bar: y position relative to card bottom edge
+          const yFromBottom = cardH - y;
+          let pct = clamp((yFromBottom / totalBorderH) * 100, 5, 95);
+          m.bottom = pct; m.top = 100 - pct;
+        }
+      } else {
+        const wrapLeft = wrap.getBoundingClientRect().left;
+        const x = e.clientX - wrapLeft - cardL;
+        if (dir === 'left') {
+          let pct = clamp((x / totalBorderW) * 100, 5, 95);
+          m.left = pct; m.right = 100 - pct;
+        } else {
+          const xFromRight = cardW - x;
+          let pct = clamp((xFromRight / totalBorderW) * 100, 5, 95);
+          m.right = pct; m.left = 100 - pct;
+        }
+      }
+      recompute();
+    });
+    bar.addEventListener('pointerup', () => dragging = false);
+    bar.addEventListener('pointercancel', () => dragging = false);
+  }
+  [barT, barB, barL, barR].forEach(startDrag);
 }
 
-function updateInnerBorder() {
-  const wrap = document.getElementById('center-edit-wrap');
-  const h = wrap.offsetHeight || 360;
-  const w = wrap.offsetWidth || 380;
-  const ib = document.getElementById('inner-border');
-  ib.style.top = (centering.top / 100 * h) + 'px';
-  ib.style.left = (centering.left / 100 * w) + 'px';
-  ib.style.right = (centering.right / 100 * w) + 'px';
-  ib.style.bottom = (centering.bottom / 100 * h) + 'px';
-}
-
-function saveCentering() {
-  updateCenteringOverlay();
+function saveCenterEdit() {
+  // analysis[editFace].margins was being mutated by drag → already saved
   goResult();
 }
 
 // ===== EDIT DAMAGE =====
-function renderDamageDefects() {
-  const wrap = document.getElementById('damage-defects');
-  wrap.innerHTML = '';
-  defects.forEach((d, i) => {
-    const el = document.createElement('div');
-    el.className = `defect-dot ${d.size || 'sm'}`;
-    el.style.left = d.x + '%';
-    el.style.top = d.y + '%';
-    el.onclick = () => { defects.splice(i, 1); renderDamageDefects(); updateDefectCount(); };
-    wrap.appendChild(el);
-  });
-  updateDefectCount();
+function switchDmgFace(face) {
+  dmgFace = face;
+  $$('.edit-face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===face));
+  $('#dmg-img').src = (face==='front' ? imgFront : imgBack) || imgFront;
+  $('#dmg-img').onload = renderDamageOverlay;
+  if ($('#dmg-img').complete) renderDamageOverlay();
 }
-function updateDefectCount() {
-  document.getElementById('defect-count').textContent = defects.length;
-}
-function addDefectAt(e) {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
-  const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
-  defects.push({ x: parseFloat(x), y: parseFloat(y), size: defectSize });
-  renderDamageDefects();
-}
-function addDefectCenter() {
-  defects.push({ x: 50, y: 50, size: defectSize });
-  renderDamageDefects();
-}
-function removeLastDefect() { defects.pop(); renderDamageDefects(); }
-function undoDefect() { defects.pop(); renderDamageDefects(); }
-function setSize(s, btn) {
-  defectSize = s;
-  document.querySelectorAll('.size-opt').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-function saveDamage() { renderResultDefects(); goResult(); }
 
-// ===== GRADES LIST =====
-function saveGrade() {
-  const grade = {
+function renderDamageOverlay() {
+  const wrap = $('#dmg-wrap');
+  const img = $('#dmg-img');
+  wrap.querySelectorAll('.dmg-layer').forEach(n=>n.remove());
+  const rect = img.getBoundingClientRect();
+  const wrapRect = wrap.getBoundingClientRect();
+  const oT = rect.top - wrapRect.top, oL = rect.left - wrapRect.left;
+
+  const layer = document.createElement('div');
+  layer.className = 'dmg-layer';
+  layer.style.cssText = `position:absolute;left:${oL}px;top:${oT}px;width:${rect.width}px;height:${rect.height}px;cursor:crosshair;`;
+  layer.addEventListener('click', e => {
+    const r = layer.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width) * 100;
+    const y = ((e.clientY - r.top) / r.height) * 100;
+    // ignore clicks on existing defects (handled by their own click)
+    if (e.target !== layer) return;
+    dmgHistory.push(JSON.parse(JSON.stringify(analysis[dmgFace].defects)));
+    analysis[dmgFace].defects.push({x, y, size: dmgSize});
+    renderDamageOverlay();
+  });
+  wrap.appendChild(layer);
+
+  analysis[dmgFace].defects.forEach((d, idx) => {
+    const sz = d.size==='lg'?32 : d.size==='md'?22 : 14;
+    const el = document.createElement('div');
+    el.style.cssText = `position:absolute;left:${(d.x/100)*rect.width}px;top:${(d.y/100)*rect.height}px;width:${sz}px;height:${sz}px;margin:${-sz/2}px 0 0 ${-sz/2}px;border:2px solid var(--red);border-radius:3px;background:rgba(255,77,77,0.2);cursor:pointer;`;
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      dmgHistory.push(JSON.parse(JSON.stringify(analysis[dmgFace].defects)));
+      analysis[dmgFace].defects.splice(idx, 1);
+      renderDamageOverlay();
+    });
+    layer.appendChild(el);
+  });
+  $('#dmg-count').textContent = analysis[dmgFace].defects.length;
+}
+
+function undoDamage() {
+  if (!dmgHistory.length) return;
+  analysis[dmgFace].defects = dmgHistory.pop();
+  renderDamageOverlay();
+}
+function setDmgSize(s, ev) {
+  dmgSize = s;
+  $$('.size-pick button').forEach(b=>b.classList.remove('active'));
+  ev.target.classList.add('active');
+}
+function saveDamageEdit() { goResult(); }
+
+// ===== GRADES STORAGE =====
+function saveToHistory() {
+  const g = {
     id: Date.now(),
-    name: analysisResult.name,
-    set: analysisResult.set,
-    psa: analysisResult.psa,
-    bgs: analysisResult.bgs,
-    cgc: analysisResult.cgc,
-    thumb: frontImg,
+    name: analysis.name, set: analysis.set,
+    psa: analysis.psa, bgs: analysis.bgs, cgc: analysis.cgc,
+    thumb: imgFront,
     ts: new Date().toLocaleDateString('fr-FR')
   };
-  grades.unshift(grade);
-  if (grades.length > 30) grades.pop();
-  localStorage.setItem('pg_grades', JSON.stringify(grades));
+  grades.unshift(g);
+  if (grades.length > 30) grades.length = 30;
+  localStorage.setItem('pg_grades_v2', JSON.stringify(grades));
 }
-
-function renderGradesList() {
-  const list = document.getElementById('grades-list');
-  if (!grades.length) { list.innerHTML = ''; return; }
-  list.innerHTML = grades.map(g => `
-    <div class="grade-item" onclick="loadGrade(${g.id})">
-      <div class="grade-thumb">
-        ${g.thumb ? `<img src="${g.thumb}" alt="">` : '🃏'}
-      </div>
+function renderGrades() {
+  const wrap = $('#grades-list');
+  if (!grades.length) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = grades.map(g=>`
+    <div class="grade-row" onclick="reopenGrade(${g.id})">
+      <div class="grade-thumb">${g.thumb?`<img src="${g.thumb}">`:'🃏'}</div>
       <div class="grade-info">
-        <div class="grade-name">${g.name}</div>
-        <div class="grade-meta">${g.ts}</div>
-        <div class="grade-badge">
-          <span class="grader-label">PSA</span>
-          <span class="grade-num">${g.psa.grade}</span>
-          <span class="grade-pct">${g.psa.confidence}%</span>
-        </div>
+        <h3>${escapeHtml(g.name)}</h3>
+        <p>${escapeHtml(g.set || '')} · ${g.ts}</p>
+        <span class="grade-badge"><b>PSA</b><span class="n">${g.psa.grade}</span><span class="p">${g.psa.confidence}%</span></span>
       </div>
-      <div class="add-pile-btn">+ Pile</div>
     </div>
   `).join('');
 }
-
-function loadGrade(id) {
-  const g = grades.find(x => x.id === id);
+function escapeHtml(s) { return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function reopenGrade(id) {
+  const g = grades.find(x=>x.id===id);
   if (!g) return;
-  analysisResult = { ...g, scores: { centering: 8, corners: 8, edges: 8, surface: 9 }, defects: [] };
-  frontImg = g.thumb;
-  showScreen('result');
-  renderResult();
+  imgFront = g.thumb; imgBack = g.thumb;
+  analysis = {
+    name: g.name, set: g.set, price_usd: 0,
+    psa: g.psa, bgs: g.bgs, cgc: g.cgc,
+    scores: {centering:8,corners:8,edges:8,surface:8},
+    front: {bbox:{x:10,y:8,w:80,h:84}, margins:{top:50,bottom:50,left:50,right:50}, defects:[]},
+    back: {bbox:{x:10,y:8,w:80,h:84}, margins:{top:50,bottom:50,left:50,right:50}, defects:[]}
+  };
+  goResult();
+}
+function deleteCurrentGrade() {
+  if (!confirm('Supprimer ce grade ?')) return;
+  goHome();
 }
 
-// ===== INIT =====
-renderGradesList();
+// init
+renderGrades();
 </script>
 </body>
 </html>
