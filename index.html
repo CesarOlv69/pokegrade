@@ -6,548 +6,209 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>PokeGrade</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #000;
   --bg2: #0a0a12;
-  --surface: #16161f;
-  --surface2: #1f1f2b;
+  --surface: #15151f;
+  --surface2: #1f1f2c;
   --border: rgba(255,255,255,0.08);
   --border2: rgba(255,255,255,0.15);
   --text: #fff;
   --muted: #8a8aa0;
   --accent: #e85d2a;
-  --psa: #e8b030;
+  --psa: #f2b842;
   --bgs: #5090e0;
   --cgc: #50c070;
   --orange: #ff8c42;
   --red: #ff4d4d;
 }
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; -webkit-touch-callout:none; }
-html, body { overscroll-behavior: none; }
-body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  max-width: 430px;
-  margin: 0 auto;
-  overflow-x: hidden;
-  position: relative;
-  -webkit-font-smoothing: antialiased;
-}
-.screen { display:none; min-height:100vh; flex-direction:column; }
-.screen.active { display:flex; animation: fadeIn 0.22s ease; }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex;animation:fade .2s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
 
-/* ===== HOME ===== */
-#home { padding: 0 0 110px; }
-.home-top {
-  padding: 60px 22px 22px;
-  display: flex; justify-content:space-between; align-items:center;
-}
-.home-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 38px; letter-spacing: 1.5px; line-height:1;
-}
-.home-title span { color: var(--accent); }
-.icon-btn {
-  width: 38px; height: 38px; border-radius: 50%;
-  background: var(--surface); display:flex; align-items:center; justify-content:center;
-  cursor:pointer; color: var(--muted); font-size: 18px;
-}
-.empty-pile {
-  margin: 0 18px 22px; padding: 26px 18px;
-  border: 1.5px dashed var(--border2); border-radius: 16px; text-align:center;
-}
-.empty-pile p { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-.empty-pile span { font-size: 13px; color: var(--muted); }
-.section-hdr {
-  display:flex; justify-content:space-between; align-items:center;
-  padding: 4px 22px 14px;
-}
-.section-hdr h2 { font-size: 20px; font-weight: 700; }
-.grade-row {
-  display:flex; align-items:center; gap: 14px;
-  padding: 12px 22px; cursor:pointer;
-  border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
-}
-.grade-row:active { background: var(--surface); }
-.grade-thumb {
-  width: 50px; height: 70px; border-radius: 6px;
-  background: var(--surface2); overflow:hidden; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-}
-.grade-thumb img { width:100%; height:100%; object-fit:cover; }
-.grade-info { flex:1; min-width:0; }
-.grade-info h3 { font-size: 15px; font-weight: 600; }
-.grade-info p { font-size: 11px; color: var(--muted); margin: 2px 0 6px; }
-.grade-badge {
-  display:inline-flex; align-items:center; gap: 6px;
-  background: var(--surface); padding: 4px 9px; border-radius: 7px;
-  font-size: 12px;
-}
-.grade-badge b { color: var(--psa); font-weight: 700; font-size: 11px; }
-.grade-badge .n { font-weight: 700; font-size: 14px; }
-.grade-badge .p { color: var(--psa); font-weight: 600; font-size: 11px; }
+/* HOME */
+#home{padding:0 0 110px}
+.home-top{padding:60px 22px 22px;display:flex;justify-content:space-between;align-items:center}
+.home-title{font-family:'Bebas Neue';font-size:38px;letter-spacing:1.5px;line-height:1}
+.home-title span{color:var(--accent)}
+.icon-btn{width:38px;height:38px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:16px}
+.empty-pile{margin:0 18px 22px;padding:24px 18px;border:1.5px dashed var(--border2);border-radius:16px;text-align:center}
+.empty-pile p{font-size:15px;font-weight:600;margin-bottom:4px}
+.empty-pile span{font-size:13px;color:var(--muted)}
+.section-hdr{display:flex;justify-content:space-between;align-items:center;padding:4px 22px 14px}
+.section-hdr h2{font-size:20px;font-weight:700}
+.grade-row{display:flex;align-items:center;gap:14px;padding:12px 22px;cursor:pointer;border-bottom:1px solid var(--border)}
+.grade-row:active{background:var(--surface)}
+.grade-thumb{width:50px;height:70px;border-radius:6px;background:var(--surface2);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px}
+.grade-thumb img{width:100%;height:100%;object-fit:cover}
+.grade-info{flex:1;min-width:0}
+.grade-info h3{font-size:15px;font-weight:600}
+.grade-info p{font-size:11px;color:var(--muted);margin:2px 0 6px}
+.grade-badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface);padding:4px 9px;border-radius:7px;font-size:12px}
+.grade-badge b{color:var(--psa);font-weight:800;font-size:11px}
+.grade-badge .n{font-weight:700;font-size:14px}
+.grade-badge .p{color:var(--psa);font-weight:600;font-size:11px}
 
-.cta-wrap {
-  position: fixed; bottom:0; left:50%; transform:translateX(-50%);
-  width:100%; max-width: 430px;
-  padding: 16px 20px calc(28px + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, var(--bg) 60%, transparent);
-  z-index: 100;
-}
-.cta {
-  width:100%; height: 58px; border:none; border-radius: 18px;
-  background: var(--accent); color: #fff; font-family:'Inter',sans-serif;
-  font-size: 16px; font-weight: 700; cursor:pointer;
-  display:flex; align-items:center; justify-content:center; gap: 10px;
-  transition: transform 0.1s;
-}
-.cta:active { transform: scale(0.97); }
-.cta svg { width: 20px; height: 20px; }
+.cta-wrap{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:16px 20px calc(28px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 60%,transparent);z-index:100}
+.cta{width:100%;height:58px;border:none;border-radius:18px;background:var(--accent);color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
+.cta:active{transform:scale(.97)}
+.cta svg{width:20px;height:20px}
 
-/* ===== CAMERA ===== */
-#camera { background: #000; position: relative; }
-.cam-top {
-  position: absolute; top:0; left:0; right:0; z-index:20;
-  padding: calc(46px + env(safe-area-inset-top)) 18px 14px;
-  display:flex; justify-content:space-between; align-items:center;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent);
-}
-.cam-cancel { font-size: 15px; font-weight: 500; cursor:pointer; }
-.cam-top h2 { font-size: 17px; font-weight: 600; }
-.cam-instr {
-  position: absolute; top: calc(110px + env(safe-area-inset-top)); left:0; right:0;
-  text-align:center; font-size: 13px; color: rgba(255,255,255,0.75);
-  z-index: 15; padding: 0 30px;
-}
-#cam-video {
-  width:100%; height:100vh; object-fit:cover;
-  position:absolute; top:0; left:0;
-}
-.cam-guide {
-  position: absolute; top:50%; left:50%; transform: translate(-50%,-50%);
-  width: 78%; aspect-ratio: 2.5/3.5;
-  z-index: 10; pointer-events:none;
-}
-.cam-guide div {
-  position:absolute; width: 32px; height: 32px;
-  border-color: #fff; border-style: solid;
-}
-.cg1 { top:0; left:0; border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
-.cg2 { top:0; right:0; border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
-.cg3 { bottom:0; left:0; border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
-.cg4 { bottom:0; right:0; border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
+/* CAMERA */
+#camera{background:#000;position:relative}
+.cam-top{position:absolute;top:0;left:0;right:0;z-index:20;padding:calc(46px + env(safe-area-inset-top)) 18px 14px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(0,0,0,.55),transparent)}
+.cam-cancel{font-size:15px;font-weight:500;cursor:pointer}
+.cam-top h2{font-size:17px;font-weight:600}
+.cam-instr{position:absolute;top:calc(110px + env(safe-area-inset-top));left:0;right:0;text-align:center;font-size:13px;color:rgba(255,255,255,.78);z-index:15;padding:0 30px}
+#cam-video{width:100%;height:100vh;object-fit:cover;position:absolute;top:0;left:0}
+.cam-guide{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:78%;aspect-ratio:2.5/3.5;z-index:10;pointer-events:none}
+.cam-guide div{position:absolute;width:32px;height:32px;border-color:#fff;border-style:solid}
+.cg1{top:0;left:0;border-width:3px 0 0 3px;border-radius:6px 0 0 0}
+.cg2{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 6px 0 0}
+.cg3{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 6px}
+.cg4{bottom:0;right:0;border-width:0 3px 3px 0;border-radius:0 0 6px 0}
+.cam-side-tabs{position:absolute;bottom:calc(135px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:4px;background:rgba(0,0,0,.55);padding:4px;border-radius:14px;z-index:15}
+.cam-side-tab{padding:8px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;color:rgba(255,255,255,.65)}
+.cam-side-tab.active{background:#fff;color:#000}
+.cam-side-tab.captured{color:var(--accent)}
+.cam-bottom{position:absolute;bottom:calc(20px + env(safe-area-inset-bottom));left:0;right:0;z-index:15;display:flex;align-items:center;justify-content:space-around;padding:0 28px}
+.cam-iconbtn{width:54px;height:54px;border-radius:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative}
+.cam-iconbtn img{width:100%;height:100%;object-fit:cover}
+.cam-iconbtn span{font-size:11px;color:#fff;font-weight:500}
+.cam-shoot{width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.18);border:4px solid #fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cam-shoot:active{transform:scale(.93)}
+.cam-shoot::after{content:'';width:56px;height:56px;border-radius:50%;background:#fff}
 
-.cam-side-tabs {
-  position: absolute; bottom: calc(135px + env(safe-area-inset-bottom));
-  left: 50%; transform: translateX(-50%);
-  display:flex; gap: 4px; background: rgba(0,0,0,0.55);
-  padding: 4px; border-radius: 14px; z-index: 15;
-}
-.cam-side-tab {
-  padding: 8px 22px; border-radius: 10px;
-  font-size: 14px; font-weight: 600; cursor:pointer;
-  color: rgba(255,255,255,0.65); transition: all 0.15s;
-}
-.cam-side-tab.active { background:#fff; color:#000; }
-.cam-side-tab.captured { color: var(--accent); }
+/* hidden file input - keep it physically in DOM but invisible */
+.hidden-file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px}
 
-.cam-bottom {
-  position: absolute; bottom: calc(20px + env(safe-area-inset-bottom));
-  left:0; right:0; z-index: 15;
-  display:flex; align-items:center; justify-content:space-around;
-  padding: 0 28px;
-}
-.cam-gallery {
-  width: 54px; height: 54px; border-radius: 12px;
-  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
-  display:flex; align-items:center; justify-content:center; cursor:pointer;
-  overflow:hidden;
-}
-.cam-gallery img { width:100%; height:100%; object-fit:cover; }
-.cam-shoot {
-  width: 76px; height: 76px; border-radius:50%;
-  background: rgba(255,255,255,0.18); border: 4px solid #fff;
-  cursor:pointer; display:flex; align-items:center; justify-content:center;
-  transition: transform 0.1s;
-}
-.cam-shoot:active { transform: scale(0.93); }
-.cam-shoot::after {
-  content:''; width: 56px; height: 56px; border-radius:50%; background:#fff;
-}
-.cam-flip {
-  width: 54px; height: 54px; border-radius: 12px;
-  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
-  display:flex; align-items:center; justify-content:center; cursor:pointer;
-}
-#file-front, #file-back { display:none; }
+/* ANALYZING */
+#analyzing{background:var(--bg);align-items:center;justify-content:center}
+.analyze-box{text-align:center;padding:30px}
+.spinner{width:56px;height:56px;border:3px solid var(--surface2);border-top-color:var(--accent);border-radius:50%;margin:0 auto 24px;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.analyze-box h2{font-family:'Bebas Neue';font-size:26px;letter-spacing:1px;margin-bottom:6px}
+.analyze-box p{font-size:13px;color:var(--muted)}
 
-/* ===== ANALYZING ===== */
-#analyzing {
-  background: var(--bg); align-items:center; justify-content:center;
-}
-.analyze-box { text-align:center; padding: 30px; }
-.spinner {
-  width: 56px; height: 56px;
-  border: 3px solid var(--surface2);
-  border-top-color: var(--accent);
-  border-radius:50%; margin: 0 auto 24px;
-  animation: spin 0.9s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.analyze-box h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 26px; letter-spacing: 1px; margin-bottom: 6px;
-}
-.analyze-box p { font-size: 13px; color: var(--muted); }
+/* RESULT */
+#result{padding-bottom:120px}
+.res-top{display:flex;justify-content:space-between;align-items:center;padding:calc(48px + env(safe-area-inset-top)) 18px 14px}
+.back-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px}
+.grader-pills{display:flex;gap:8px}
+.gpill{padding:5px 12px;border-radius:9px;font-size:11px;font-weight:800;letter-spacing:.5px;cursor:pointer;border:1.5px solid;opacity:.4}
+.gpill.active{opacity:1}
+.gpill.psa{color:var(--psa);border-color:var(--psa)}
+.gpill.bgs{color:var(--bgs);border-color:var(--bgs)}
+.gpill.cgc{color:var(--cgc);border-color:var(--cgc)}
 
-/* ===== RESULT ===== */
-#result { padding-bottom: 120px; }
-.res-top {
-  display:flex; justify-content:space-between; align-items:center;
-  padding: calc(48px + env(safe-area-inset-top)) 18px 14px;
-}
-.back-btn {
-  width: 36px; height: 36px; display:flex; align-items:center; justify-content:center;
-  cursor:pointer; font-size: 22px; color: var(--text);
-}
-.grader-pills { display:flex; gap: 8px; }
-.gpill {
-  padding: 5px 12px; border-radius: 9px;
-  font-size: 11px; font-weight: 800; letter-spacing: 0.5px;
-  cursor:pointer; border: 1.5px solid; opacity: 0.4;
-  transition: opacity 0.15s;
-}
-.gpill.active { opacity: 1; }
-.gpill.psa { color: var(--psa); border-color: var(--psa); }
-.gpill.bgs { color: var(--bgs); border-color: var(--bgs); }
-.gpill.cgc { color: var(--cgc); border-color: var(--cgc); }
+.res-card{margin:0 14px 14px;background:var(--surface);border-radius:22px;border:1px solid var(--border);overflow:hidden}
+.res-card-head{display:flex;justify-content:space-between;align-items:flex-start;padding:16px 18px 12px}
+.res-card-head h1{font-size:18px;font-weight:700}
+.res-card-head .meta{font-size:11px;color:var(--muted);margin-top:3px}
+.big-grade{text-align:right;min-width:90px}
+.big-grade .n{font-family:'Bebas Neue';font-size:64px;line-height:.9;letter-spacing:1px}
+.big-grade .lbl{font-size:10px;font-weight:800;letter-spacing:1.2px;margin-top:3px}
+.big-grade .pct{font-size:12px;font-weight:700;margin-top:1px}
 
-.res-card {
-  margin: 0 14px 14px;
-  background: var(--surface);
-  border-radius: 22px;
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
-.res-card-head {
-  display:flex; justify-content:space-between; align-items:flex-start;
-  padding: 16px 18px 12px;
-}
-.res-card-head h1 { font-size: 18px; font-weight: 700; }
-.res-card-head .meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
-.big-grade { text-align:right; min-width: 90px; }
-.big-grade .n {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 64px; line-height: 0.9; letter-spacing: 1px;
-}
-.big-grade .lbl { font-size: 10px; font-weight: 800; letter-spacing: 1.2px; margin-top: 3px; }
-.big-grade .pct { font-size: 12px; font-weight: 700; margin-top: 1px; }
+.face-tabs{display:flex;padding:0 18px;border-bottom:1px solid var(--border)}
+.face-tab{flex:1;padding:12px 0;text-align:center;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;position:relative}
+.face-tab.active{color:var(--text)}
+.face-tab.active::after{content:'';position:absolute;bottom:-1px;left:25%;right:25%;height:2px;background:var(--accent);border-radius:1px}
 
-/* face tabs (recto/verso) */
-.face-tabs {
-  display:flex; padding: 0 18px;
-  border-bottom: 1px solid var(--border);
-}
-.face-tab {
-  flex:1; padding: 12px 0; text-align:center;
-  font-size: 13px; font-weight: 600; color: var(--muted);
-  cursor:pointer; position:relative;
-  transition: color 0.15s;
-}
-.face-tab.active { color: var(--text); }
-.face-tab.active::after {
-  content:''; position: absolute; bottom:-1px; left:25%; right:25%;
-  height: 2px; background: var(--accent); border-radius: 1px;
-}
+.face-area{position:relative;width:100%;background:#000;overflow:hidden;user-select:none;touch-action:none}
+.face-img{width:100%;display:block;max-height:60vh;object-fit:contain;pointer-events:none}
+.face-page{display:none}
+.face-page.active{display:block}
 
-/* card image + overlay */
-.face-area {
-  position: relative;
-  width: 100%;
-  background: #000;
-  overflow: hidden;
-  user-select: none;
-  touch-action: none;
-}
-.face-img {
-  width: 100%; display:block;
-  max-height: 60vh; object-fit: contain;
-  pointer-events: none;
-}
-/* the "card bounding box" inside the photo. computed from analysis */
-.card-box {
-  position: absolute;
-  pointer-events: none;
-  /* outer red border = card edges */
-}
-.card-box .outer {
-  position:absolute; inset:0;
-  border: 1.5px solid var(--red);
-  border-radius: 5px;
-}
-.card-box .inner {
-  position:absolute;
-  border: 1.5px solid var(--red);
-  border-radius: 4px;
-  /* placed by JS */
-}
-/* the 4 orange bars - represent margin width on each side */
-.mbar { position:absolute; background: var(--orange); border-radius: 2px; opacity:0.95; }
-.mbar.top, .mbar.bottom { height: 6px; left: 18%; right: 18%; }
-.mbar.left, .mbar.right { width: 6px; top: 22%; bottom: 22%; }
-.mbar.draggable { cursor: pointer; touch-action: none; }
-.mbar.draggable::after {
-  content:''; position:absolute;
-  /* invisible larger hit area */
-}
-.mbar.top::after, .mbar.bottom::after { top:-10px; bottom:-10px; left:0; right:0; }
-.mbar.left::after, .mbar.right::after { left:-10px; right:-10px; top:0; bottom:0; }
+.score-grid{display:grid;grid-template-columns:repeat(4,1fr);background:var(--border);gap:1px}
+.score-cell{background:var(--surface);padding:10px 4px;text-align:center}
+.score-cell .lbl{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.6px;margin-bottom:3px}
+.score-cell .val{font-size:15px;font-weight:700}
 
-/* % labels next to each bar */
-.mlbl {
-  position: absolute;
-  background: rgba(0,0,0,0.78);
-  color:#fff; font-size: 11px; font-weight: 700;
-  padding: 3px 7px; border-radius: 5px;
-  pointer-events: none;
-  white-space: nowrap;
-}
+.flip-pill,.detail-pill{position:absolute;bottom:10px;background:rgba(0,0,0,.6);color:#fff;border:none;padding:6px 12px;border-radius:18px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.flip-pill{left:14px;display:flex;align-items:center;gap:5px}
+.detail-pill{right:14px}
 
-/* defect dots */
-.defect {
-  position:absolute;
-  border: 2px solid var(--red);
-  border-radius: 3px;
-  background: rgba(255,77,77,0.15);
-  pointer-events: auto; cursor:pointer;
-}
-.defect.sm { width: 14px; height: 14px; margin: -7px 0 0 -7px; }
-.defect.md { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
-.defect.lg { width: 32px; height: 32px; margin: -16px 0 0 -16px; }
+.act-list{margin:16px 14px 0;display:flex;flex-direction:column;gap:8px}
+.act-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--surface);border-radius:14px;cursor:pointer;border:1px solid var(--border)}
+.act-icon{width:36px;height:36px;border-radius:9px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.act-icon svg{width:18px;height:18px}
+.act-text{font-size:14px;font-weight:600}
+.act-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.act-item.danger .act-text{color:var(--red)}
+.act-item.danger .act-icon{background:rgba(255,77,77,.12)}
+.act-item.danger .act-icon svg{color:var(--red)}
 
-/* swipe between front/back */
-.faces-swiper {
-  position: relative;
-  overflow: hidden;
-}
-.face-page {
-  display: none;
-}
-.face-page.active { display: block; }
+.add-coll-wrap{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:100;padding:14px 18px calc(26px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 65%,transparent)}
+.add-coll{width:100%;height:52px;background:var(--surface);border:1px solid var(--border2);border-radius:16px;color:var(--text);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.add-coll .price{color:var(--cgc);margin-left:4px}
 
-/* score grid */
-.score-grid {
-  display:grid; grid-template-columns: repeat(4,1fr);
-  background: var(--border);
-  gap: 1px;
-}
-.score-cell {
-  background: var(--surface); padding: 10px 4px; text-align:center;
-}
-.score-cell .lbl { font-size: 9px; color: var(--muted); font-weight: 600; letter-spacing: 0.6px; margin-bottom: 3px; }
-.score-cell .val { font-size: 15px; font-weight: 700; }
+/* EDIT CENTER */
+#edit-center{background:var(--bg);padding-bottom:30px}
+.edit-top{padding:calc(48px + env(safe-area-inset-top)) 18px 16px;display:flex;justify-content:space-between;align-items:center}
+.edit-top .cancel{font-size:15px;cursor:pointer}
+.edit-top h2{font-size:16px;font-weight:600}
+.edit-top .done{background:#fff;color:#000;border:none;padding:8px 18px;border-radius:20px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.edit-face-tabs{display:flex;gap:4px;margin:0 18px 14px;background:var(--surface);padding:4px;border-radius:12px}
+.edit-face-tab{flex:1;padding:9px 0;text-align:center;font-size:13px;font-weight:600;color:var(--muted);border-radius:9px;cursor:pointer}
+.edit-face-tab.active{background:var(--surface2);color:var(--text)}
+.edit-img-wrap{position:relative;margin:0 14px;border-radius:14px;overflow:hidden;background:#000;touch-action:none}
+.edit-img-wrap img{width:100%;display:block;max-height:55vh;object-fit:contain;pointer-events:none;user-select:none}
+.hint{text-align:center;padding:14px 18px 4px;font-size:12px;color:var(--muted);line-height:1.4}
 
-.flip-pill {
-  position:absolute; bottom: 10px; left:14px;
-  background: rgba(0,0,0,0.6); color:#fff;
-  border:none; padding: 6px 12px; border-radius: 18px;
-  font-size: 12px; font-weight: 600; cursor:pointer;
-  display:flex; align-items:center; gap: 5px;
-  font-family: 'Inter', sans-serif;
-}
-.detail-pill {
-  position:absolute; bottom: 10px; right:14px;
-  background: rgba(0,0,0,0.6); color:#fff;
-  border:none; padding: 6px 12px; border-radius: 18px;
-  font-size: 12px; font-weight: 600; cursor:pointer;
-  font-family: 'Inter', sans-serif;
-}
+/* EDIT DAMAGE */
+#edit-damage{background:var(--bg);padding-bottom:30px}
+.dmg-toolbar{margin:14px 14px 0;background:var(--surface);border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.dmg-toolbar .ttl{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.dmg-toolbar .cnt{color:var(--muted);font-weight:500}
+.dmg-undo{background:none;border:none;color:var(--muted);font-family:inherit;font-size:13px;cursor:pointer}
+.size-pick{margin:10px 14px 0;display:flex;background:var(--surface);border-radius:12px;padding:4px}
+.size-pick button{flex:1;height:38px;border:none;background:none;color:var(--muted);font-family:inherit;font-size:13px;font-weight:600;border-radius:8px;cursor:pointer}
+.size-pick button.active{background:var(--surface2);color:var(--text)}
 
-/* actions */
-.act-list { margin: 16px 14px 0; display:flex; flex-direction:column; gap: 8px; }
-.act-item {
-  display:flex; align-items:center; gap: 14px;
-  padding: 14px 16px; background: var(--surface);
-  border-radius: 14px; cursor:pointer;
-  border: 1px solid var(--border);
-}
-.act-icon {
-  width: 36px; height: 36px; border-radius: 9px;
-  background: var(--surface2); display:flex; align-items:center; justify-content:center;
-  flex-shrink:0;
-}
-.act-icon svg { width: 18px; height: 18px; color: var(--text); }
-.act-text { font-size: 14px; font-weight: 600; }
-.act-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.act-item.danger .act-text { color: var(--red); }
-.act-item.danger .act-icon { background: rgba(255,77,77,0.12); }
-.act-item.danger .act-icon svg { color: var(--red); }
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal-bg .box{background:var(--surface);border-radius:20px;padding:26px 22px;max-width:360px;width:100%;border:1px solid var(--border2)}
+.modal-bg h2{font-size:18px;font-weight:700;margin-bottom:6px}
+.modal-bg p{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.45}
+.modal-bg input{width:100%;padding:12px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-family:inherit;font-size:14px;margin-bottom:12px;outline:none;-webkit-appearance:none}
+.modal-bg input:focus{border-color:var(--accent)}
+.btn-primary{width:100%;height:46px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:15px;font-weight:700;border-radius:12px;cursor:pointer}
+.btn-text{width:100%;height:36px;border:none;background:none;color:var(--muted);font-family:inherit;font-size:13px;margin-top:6px;cursor:pointer}
 
-.add-coll-wrap {
-  position: fixed; bottom:0; left:50%; transform:translateX(-50%);
-  width:100%; max-width: 430px; z-index:100;
-  padding: 14px 18px calc(26px + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, var(--bg) 65%, transparent);
-}
-.add-coll {
-  width:100%; height: 52px;
-  background: var(--surface); border: 1px solid var(--border2);
-  border-radius: 16px; color: var(--text);
-  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
-  cursor:pointer;
-  display:flex; align-items:center; justify-content:center; gap: 8px;
-}
-.add-coll .price { color: var(--cgc); margin-left: 4px; }
+/* SOURCE PICKER */
+.src-picker{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9998;align-items:flex-end;justify-content:center}
+.src-picker.show{display:flex;animation:fade .15s}
+.src-sheet{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:430px;padding:18px 18px calc(28px + env(safe-area-inset-bottom));border-top:1px solid var(--border2)}
+.src-sheet h3{font-size:16px;font-weight:700;text-align:center;margin-bottom:14px}
+.src-btn{width:100%;padding:16px;background:var(--surface2);border:none;border-radius:14px;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.src-btn svg{width:22px;height:22px;color:var(--accent)}
+.src-cancel{width:100%;padding:14px;background:none;border:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;margin-top:6px}
 
-/* ===== EDIT CENTER (full screen) ===== */
-#edit-center { background: var(--bg); padding-bottom: 30px; }
-.edit-top {
-  padding: calc(48px + env(safe-area-inset-top)) 18px 16px;
-  display:flex; justify-content:space-between; align-items:center;
-}
-.edit-top .cancel { font-size: 15px; cursor:pointer; }
-.edit-top h2 { font-size: 16px; font-weight: 600; }
-.edit-top .done {
-  background: #fff; color: #000; border: none;
-  padding: 8px 18px; border-radius: 20px;
-  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer;
-}
-
-.edit-face-tabs {
-  display: flex; gap: 4px; margin: 0 18px 14px;
-  background: var(--surface); padding: 4px;
-  border-radius: 12px;
-}
-.edit-face-tab {
-  flex:1; padding: 9px 0; text-align:center;
-  font-size: 13px; font-weight: 600; color: var(--muted);
-  border-radius: 9px; cursor: pointer; transition: all 0.15s;
-}
-.edit-face-tab.active { background: var(--surface2); color: var(--text); }
-
-.edit-img-wrap {
-  position: relative;
-  margin: 0 14px;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #000;
-  touch-action: none;
-}
-.edit-img-wrap img {
-  width: 100%; display: block;
-  max-height: 55vh; object-fit: contain;
-  pointer-events: none;
-  user-select: none;
-}
-
-.hint {
-  text-align: center; padding: 14px 18px 4px;
-  font-size: 12px; color: var(--muted);
-}
-
-/* ===== EDIT DAMAGE ===== */
-#edit-damage { background: var(--bg); padding-bottom: 30px; }
-.dmg-toolbar {
-  margin: 14px 14px 0;
-  background: var(--surface); border-radius: 14px;
-  padding: 12px 14px;
-  display:flex; justify-content:space-between; align-items:center;
-}
-.dmg-toolbar .ttl {
-  font-size: 14px; font-weight: 700;
-  display:flex; align-items:center; gap: 8px;
-}
-.dmg-toolbar .cnt { color: var(--muted); font-weight: 500; }
-.dmg-undo {
-  background: none; border: none; color: var(--muted);
-  font-family: 'Inter', sans-serif; font-size: 13px; cursor:pointer;
-  display:flex; align-items:center; gap: 5px;
-}
-
-.size-pick {
-  margin: 10px 14px 0; display:flex;
-  background: var(--surface); border-radius: 12px; padding: 4px;
-}
-.size-pick button {
-  flex:1; height: 38px; border:none;
-  background: none; color: var(--muted);
-  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
-  border-radius: 8px; cursor:pointer;
-}
-.size-pick button.active { background: var(--surface2); color: var(--text); }
-
-/* ===== API MODAL ===== */
-.modal-bg {
-  display:none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.85); z-index: 9999;
-  align-items: center; justify-content: center; padding: 20px;
-}
-.modal-bg.show { display: flex; }
-.modal-bg .box {
-  background: var(--surface); border-radius: 20px; padding: 26px 22px;
-  max-width: 360px; width: 100%; border: 1px solid var(--border2);
-}
-.modal-bg h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-.modal-bg p { font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.45; }
-.modal-bg input {
-  width:100%; padding: 12px 14px;
-  background: var(--bg2); border: 1px solid var(--border2);
-  border-radius: 12px; color: var(--text);
-  font-family: 'Inter', sans-serif; font-size: 14px;
-  margin-bottom: 12px; outline:none;
-  -webkit-appearance:none;
-}
-.modal-bg input:focus { border-color: var(--accent); }
-.modal-bg .btn-primary {
-  width:100%; height: 46px; border:none;
-  background: var(--accent); color:#fff;
-  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700;
-  border-radius: 12px; cursor:pointer;
-}
-.modal-bg .btn-text {
-  width:100%; height: 36px; border:none;
-  background: none; color: var(--muted);
-  font-family: 'Inter', sans-serif; font-size: 13px;
-  margin-top: 6px; cursor:pointer;
-}
-
-/* error toast */
-.toast {
-  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
-  background: rgba(255,77,77,0.95); color:#fff;
-  padding: 10px 18px; border-radius: 12px;
-  font-size: 13px; font-weight: 600; z-index: 9000;
-  display: none; max-width: 320px;
-}
-.toast.show { display:block; animation: fadeIn 0.2s ease; }
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(255,77,77,.95);color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:600;z-index:9000;display:none;max-width:320px;text-align:center}
+.toast.show{display:block;animation:fade .2s}
 </style>
 </head>
 <body>
 
-<!-- ============ HOME ============ -->
+<!-- HOME -->
 <div id="home" class="screen active">
   <div class="home-top">
     <div class="home-title">poke<span>grade</span></div>
     <div class="icon-btn" onclick="resetApiKey()">⚙</div>
   </div>
-
-  <div class="empty-pile" id="empty-pile">
+  <div class="empty-pile">
     <p>Ta pile de grading est vide</p>
     <span>Ajoute des cartes pour suivre ce que tu veux soumettre</span>
   </div>
-
-  <div class="section-hdr">
-    <h2>Récents</h2>
-  </div>
+  <div class="section-hdr"><h2>Récents</h2></div>
   <div id="grades-list"></div>
-
   <div class="cta-wrap">
     <button class="cta" onclick="goCamera()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h3l1-2h6l1 2h3a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></svg>
@@ -556,7 +217,7 @@ body {
   </div>
 </div>
 
-<!-- ============ CAMERA ============ -->
+<!-- CAMERA -->
 <div id="camera" class="screen">
   <video id="cam-video" autoplay playsinline muted></video>
   <canvas id="cam-canvas" style="display:none"></canvas>
@@ -565,32 +226,44 @@ body {
     <h2>Grader une carte</h2>
     <span style="width:55px"></span>
   </div>
-  <div class="cam-instr" id="cam-instr">Prends une photo nette du <b>recto</b></div>
-
-  <div class="cam-guide">
-    <div class="cg1"></div><div class="cg2"></div><div class="cg3"></div><div class="cg4"></div>
-  </div>
-
+  <div class="cam-instr" id="cam-instr">Photo nette du <b>recto</b></div>
+  <div class="cam-guide"><div class="cg1"></div><div class="cg2"></div><div class="cg3"></div><div class="cg4"></div></div>
   <div class="cam-side-tabs">
     <div class="cam-side-tab active" id="tab-f">Recto</div>
     <div class="cam-side-tab" id="tab-b">Verso</div>
   </div>
-
   <div class="cam-bottom">
-    <div class="cam-gallery" onclick="openGallery()" id="thumb-prev">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    <div class="cam-iconbtn" id="thumb-prev" onclick="openSourcePicker()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
     </div>
     <div class="cam-shoot" onclick="takePhoto()"></div>
-    <div class="cam-flip" onclick="restartCamera()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 0 0 14.85 3.36L23 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10"/></svg>
+    <div class="cam-iconbtn" onclick="restartCamera()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="22" height="22"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 0 0 14.85 3.36L23 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10"/></svg>
     </div>
   </div>
-
-  <input type="file" id="file-front" accept="image/*">
-  <input type="file" id="file-back" accept="image/*">
 </div>
 
-<!-- ============ ANALYZING ============ -->
+<!-- SOURCE PICKER (galerie / camera) -->
+<div class="src-picker" id="src-picker">
+  <div class="src-sheet">
+    <h3>Importer une photo</h3>
+    <button class="src-btn" onclick="pickFromGallery()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      Photothèque
+    </button>
+    <button class="src-btn" onclick="pickFromCamera()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5h3l1-2h6l1 2h3a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></svg>
+      Prendre une photo
+    </button>
+    <button class="src-cancel" onclick="closeSourcePicker()">Annuler</button>
+  </div>
+</div>
+
+<!-- Hidden file inputs - separate ones for gallery vs camera so iOS shows the right picker -->
+<input type="file" id="file-gallery" class="hidden-file" accept="image/*">
+<input type="file" id="file-camera" class="hidden-file" accept="image/*" capture="environment">
+
+<!-- ANALYZING -->
 <div id="analyzing" class="screen">
   <div class="analyze-box">
     <div class="spinner"></div>
@@ -599,7 +272,7 @@ body {
   </div>
 </div>
 
-<!-- ============ RESULT ============ -->
+<!-- RESULT -->
 <div id="result" class="screen">
   <div class="res-top">
     <div class="back-btn" onclick="goHome()">‹</div>
@@ -610,7 +283,6 @@ body {
     </div>
     <div style="width:36px"></div>
   </div>
-
   <div class="res-card">
     <div class="res-card-head">
       <div style="flex:1;min-width:0">
@@ -623,31 +295,24 @@ body {
         <div class="pct" id="r-pct" style="color:var(--psa)">—</div>
       </div>
     </div>
-
     <div class="face-tabs">
       <div class="face-tab active" data-face="front" onclick="showFace('front')">Recto</div>
       <div class="face-tab" data-face="back" onclick="showFace('back')">Verso</div>
     </div>
-
-    <div class="faces-swiper">
+    <div>
       <div class="face-page active" data-face="front">
         <div class="face-area" id="face-area-front">
           <img class="face-img" id="img-front" src="">
-          <div id="overlay-front"></div>
           <button class="flip-pill" onclick="showFace('back')">↻ Flip</button>
-          <button class="detail-pill" onclick="toggleScores()">⌃</button>
         </div>
       </div>
       <div class="face-page" data-face="back">
         <div class="face-area" id="face-area-back">
           <img class="face-img" id="img-back" src="">
-          <div id="overlay-back"></div>
           <button class="flip-pill" onclick="showFace('front')">↻ Flip</button>
-          <button class="detail-pill" onclick="toggleScores()">⌃</button>
         </div>
       </div>
     </div>
-
     <div class="score-grid" id="score-grid">
       <div class="score-cell"><div class="lbl">CENTRAGE</div><div class="val" id="sc-c">—</div></div>
       <div class="score-cell"><div class="lbl">COINS</div><div class="val" id="sc-co">—</div></div>
@@ -655,34 +320,24 @@ body {
       <div class="score-cell"><div class="lbl">SURFACE</div><div class="val" id="sc-s">—</div></div>
     </div>
   </div>
-
   <div class="act-list">
     <div class="act-item" onclick="goEditCenter()">
       <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></div>
-      <div>
-        <div class="act-text">Modifier le centrage</div>
-        <div class="act-sub">Ajuster les marges manuellement</div>
-      </div>
+      <div><div class="act-text">Modifier le centrage</div><div class="act-sub">Ajuster les bords de la carte</div></div>
     </div>
     <div class="act-item" onclick="goEditDamage()">
       <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/></svg></div>
-      <div>
-        <div class="act-text">Modifier les défauts</div>
-        <div class="act-sub">Ajouter ou supprimer des marqueurs</div>
-      </div>
+      <div><div class="act-text">Modifier les défauts</div><div class="act-sub">Ajouter ou supprimer des marqueurs</div></div>
     </div>
     <div class="act-item" onclick="goCamera()">
       <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5h3l1-2h6l1 2h3a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-      <div>
-        <div class="act-text">Reprendre les photos</div>
-      </div>
+      <div><div class="act-text">Reprendre les photos</div></div>
     </div>
     <div class="act-item danger" onclick="deleteCurrentGrade()">
       <div class="act-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div>
       <div><div class="act-text">Supprimer ce grade</div></div>
     </div>
   </div>
-
   <div class="add-coll-wrap">
     <button class="add-coll">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -691,44 +346,33 @@ body {
   </div>
 </div>
 
-<!-- ============ EDIT CENTERING ============ -->
+<!-- EDIT CENTERING -->
 <div id="edit-center" class="screen">
   <div class="edit-top">
     <span class="cancel" onclick="goResult()">Annuler</span>
     <h2>Modifier le centrage</h2>
     <button class="done" onclick="saveCenterEdit()">Terminé</button>
   </div>
-
   <div class="edit-face-tabs">
     <div class="edit-face-tab active" data-face="front" onclick="switchEditFace('front')">Recto</div>
     <div class="edit-face-tab" data-face="back" onclick="switchEditFace('back')">Verso</div>
   </div>
-
-  <div class="edit-img-wrap" id="edit-wrap">
-    <img id="edit-img" src="">
-    <!-- overlay rendered by JS -->
-  </div>
-
-  <div class="hint">Drag les bandes oranges pour ajuster<br>les marges intérieures de la carte</div>
+  <div class="edit-img-wrap" id="edit-wrap"><img id="edit-img" src=""></div>
+  <div class="hint">Glisse les <b style="color:var(--orange)">4 bandes oranges</b> pour ajuster les bords de la zone d'illustration</div>
 </div>
 
-<!-- ============ EDIT DAMAGE ============ -->
+<!-- EDIT DAMAGE -->
 <div id="edit-damage" class="screen">
   <div class="edit-top">
     <span class="cancel" onclick="goResult()">Annuler</span>
     <h2>Modifier les défauts</h2>
-    <button class="done" onclick="saveDamageEdit()">Terminé</button>
+    <button class="done" onclick="goResult()">Terminé</button>
   </div>
-
   <div class="edit-face-tabs">
     <div class="edit-face-tab active" data-face="front" onclick="switchDmgFace('front')">Recto</div>
     <div class="edit-face-tab" data-face="back" onclick="switchDmgFace('back')">Verso</div>
   </div>
-
-  <div class="edit-img-wrap" id="dmg-wrap">
-    <img id="dmg-img" src="">
-  </div>
-
+  <div class="edit-img-wrap" id="dmg-wrap"><img id="dmg-img" src=""></div>
   <div class="dmg-toolbar">
     <div class="ttl">🔴 Défauts <span class="cnt" id="dmg-count">0</span></div>
     <button class="dmg-undo" onclick="undoDamage()">↩ Annuler</button>
@@ -738,14 +382,14 @@ body {
     <button onclick="setDmgSize('md',event)">• Moyen</button>
     <button onclick="setDmgSize('lg',event)">● Grand</button>
   </div>
-  <div class="hint">Tape sur la carte pour placer un défaut.<br>Tape sur un défaut existant pour le retirer.</div>
+  <div class="hint">Tape la carte pour ajouter un défaut.<br>Tape un défaut pour le retirer.</div>
 </div>
 
-<!-- API key modal -->
+<!-- API KEY -->
 <div class="modal-bg" id="api-modal">
   <div class="box">
     <h2>Clé API Anthropic</h2>
-    <p>Nécessaire pour l'analyse IA. Stockée uniquement sur ton iPhone, jamais envoyée ailleurs. Récupère-la sur <b>console.anthropic.com</b>.</p>
+    <p>Récupère-la sur <b>console.anthropic.com</b>. Elle reste sur ton iPhone.</p>
     <input id="api-input" type="password" placeholder="sk-ant-api03-..." autocomplete="off">
     <button class="btn-primary" onclick="saveApiKey()">Continuer</button>
     <button class="btn-text" onclick="closeApi()">Annuler</button>
@@ -758,37 +402,27 @@ body {
 // ===== STATE =====
 let apiKey = localStorage.getItem('pg_key') || '';
 let imgFront = null, imgBack = null;
-let camFace = 'front'; // which face we're currently capturing
+let camFace = 'front';
 let camStream = null;
-
-// analysis is per-face (the IA returns card bbox for each face independently)
-let analysis = {
-  name: '', set: '', price_usd: 0,
-  psa: {grade:0, confidence:0}, bgs: {grade:0, confidence:0}, cgc: {grade:0, confidence:0},
-  scores: {centering:0, corners:0, edges:0, surface:0},
-  front: { bbox: null, margins: null, defects: [] },
-  back:  { bbox: null, margins: null, defects: [] }
-};
-
+let analysis = null;
 let currentGrader = 'psa';
-let currentFace = 'front';      // which face is shown in result
-let editFace = 'front';         // which face in edit centering
-let dmgFace = 'front';          // which face in edit damage
+let currentFace = 'front';
+let editFace = 'front';
+let dmgFace = 'front';
 let dmgSize = 'sm';
-let dmgHistory = [];            // for undo
+let dmgHistory = [];
+let grades = JSON.parse(localStorage.getItem('pg_grades_v3') || '[]');
 
-let grades = JSON.parse(localStorage.getItem('pg_grades_v2') || '[]');
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
 
-// ===== UTILS =====
-function $(s) { return document.querySelector(s); }
-function $$(s) { return document.querySelectorAll(s); }
 function showScreen(id) {
-  $$('.screen').forEach(s=>s.classList.remove('active'));
+  $$('.screen').forEach(s => s.classList.remove('active'));
   $('#'+id).classList.add('active');
 }
 function showToast(msg) {
   const t = $('#toast'); t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3000);
+  setTimeout(() => t.classList.remove('show'), 3500);
 }
 function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
@@ -798,37 +432,43 @@ function goCamera() {
   imgFront = null; imgBack = null; camFace = 'front';
   $('#tab-f').classList.add('active'); $('#tab-f').classList.remove('captured');
   $('#tab-b').classList.remove('active'); $('#tab-b').classList.remove('captured');
-  $('#cam-instr').innerHTML = "Prends une photo nette du <b>recto</b>";
+  $('#cam-instr').innerHTML = "Photo nette du <b>recto</b>";
+  $('#thumb-prev').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
   showScreen('camera');
   startCamera();
 }
-function goResult() {
-  showScreen('result');
-  renderResult();
-}
+function goResult() { showScreen('result'); renderResult(); }
 function goEditCenter() {
   editFace = currentFace;
-  $$('.edit-face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===editFace));
-  $('#edit-img').src = (editFace==='front' ? imgFront : imgBack) || imgFront;
-  $('#edit-img').onload = renderEditCenterOverlay;
-  if ($('#edit-img').complete) renderEditCenterOverlay();
+  $$('.edit-face-tab').forEach(t => t.classList.toggle('active', t.dataset.face === editFace));
+  loadEditImage();
   showScreen('edit-center');
+}
+function loadEditImage() {
+  const img = $('#edit-img');
+  img.onload = () => renderEditOverlay();
+  img.src = (editFace === 'front' ? imgFront : imgBack) || imgFront;
+  if (img.complete && img.naturalWidth) renderEditOverlay();
 }
 function goEditDamage() {
   dmgFace = currentFace;
-  $$('.edit-face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===dmgFace));
-  $('#dmg-img').src = (dmgFace==='front' ? imgFront : imgBack) || imgFront;
-  $('#dmg-img').onload = renderDamageOverlay;
-  if ($('#dmg-img').complete) renderDamageOverlay();
+  $$('#edit-damage .edit-face-tab').forEach(t => t.classList.toggle('active', t.dataset.face === dmgFace));
+  loadDmgImage();
   dmgHistory = [];
   showScreen('edit-damage');
+}
+function loadDmgImage() {
+  const img = $('#dmg-img');
+  img.onload = () => renderDamageOverlay();
+  img.src = (dmgFace === 'front' ? imgFront : imgBack) || imgFront;
+  if (img.complete && img.naturalWidth) renderDamageOverlay();
 }
 
 // ===== CAMERA =====
 async function startCamera() {
   try {
     camStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: 'environment' }, width: {ideal:1920}, height: {ideal:1080} },
+      video: { facingMode: { ideal: 'environment' }, width:{ideal:1920}, height:{ideal:1080} },
       audio: false
     });
     $('#cam-video').srcObject = camStream;
@@ -838,29 +478,42 @@ async function startCamera() {
   }
 }
 function stopCamera() {
-  if (camStream) camStream.getTracks().forEach(t=>t.stop());
+  if (camStream) camStream.getTracks().forEach(t => t.stop());
   camStream = null;
 }
 function restartCamera() { stopCamera(); startCamera(); }
 function takePhoto() {
   const v = $('#cam-video');
-  if (!v.videoWidth) { openGallery(); return; }
+  if (!v.videoWidth) { openSourcePicker(); return; }
   const c = $('#cam-canvas');
   c.width = v.videoWidth; c.height = v.videoHeight;
   c.getContext('2d').drawImage(v, 0, 0);
   handleCaptured(c.toDataURL('image/jpeg', 0.92));
 }
-function openGallery() {
-  (camFace === 'front' ? $('#file-front') : $('#file-back')).click();
+
+// ===== SOURCE PICKER (gallery vs camera) =====
+function openSourcePicker() { $('#src-picker').classList.add('show'); }
+function closeSourcePicker() { $('#src-picker').classList.remove('show'); }
+function pickFromGallery() {
+  closeSourcePicker();
+  $('#file-gallery').click();
 }
-$('#file-front').addEventListener('change', e=>readFile(e, 'front'));
-$('#file-back').addEventListener('change', e=>readFile(e, 'back'));
-function readFile(e, face) {
-  const f = e.target.files[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = ev => { camFace = face; handleCaptured(ev.target.result); };
-  r.readAsDataURL(f);
+function pickFromCamera() {
+  closeSourcePicker();
+  $('#file-camera').click();
 }
+// hook both file inputs
+['file-gallery', 'file-camera'].forEach(id => {
+  document.getElementById(id).addEventListener('change', function(e) {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = ev => handleCaptured(ev.target.result);
+    r.readAsDataURL(f);
+    e.target.value = ''; // reset so same file can be reselected
+  });
+});
+
 function handleCaptured(dataUrl) {
   if (camFace === 'front') {
     imgFront = dataUrl;
@@ -868,7 +521,7 @@ function handleCaptured(dataUrl) {
     $('#tab-f').classList.remove('active');
     $('#tab-b').classList.add('active');
     camFace = 'back';
-    $('#cam-instr').innerHTML = "Prends une photo nette du <b>verso</b>";
+    $('#cam-instr').innerHTML = "Photo nette du <b>verso</b>";
     $('#thumb-prev').innerHTML = '<img src="'+dataUrl+'">';
   } else {
     imgBack = dataUrl;
@@ -892,7 +545,10 @@ function saveApiKey() {
   $('#api-modal').classList.remove('show');
   if (window._afterKey) { window._afterKey(); window._afterKey = null; }
 }
-function closeApi() { $('#api-modal').classList.remove('show'); }
+function closeApi() {
+  $('#api-modal').classList.remove('show');
+  window._afterKey = null;
+}
 function resetApiKey() {
   if (confirm('Remplacer la clé API ?')) {
     localStorage.removeItem('pg_key');
@@ -903,99 +559,97 @@ function resetApiKey() {
 }
 
 // ===== ANALYSIS =====
-const ANALYZE_STEPS = [
-  'Identification de la carte...',
-  'Détection des bords...',
-  'Analyse du centrage...',
-  'Recherche des défauts...',
-  'Calcul des grades PSA/BGS/CGC...'
-];
+const STEPS = ['Identification de la carte...', 'Détection des bords...', 'Calcul du centrage...', 'Recherche des défauts...', 'Estimation des grades...'];
 
 async function startAnalysis() {
   showScreen('analyzing');
   let i = 0;
-  const tick = setInterval(()=>{
-    i = Math.min(i+1, ANALYZE_STEPS.length-1);
-    $('#analyze-step').textContent = ANALYZE_STEPS[i];
+  const tick = setInterval(() => {
+    i = Math.min(i+1, STEPS.length-1);
+    $('#analyze-step').textContent = STEPS[i];
   }, 1300);
-
   try {
     const result = await callClaudeVision();
     clearInterval(tick);
-    analysis = {
-      ...analysis,
-      ...result,
-      front: { bbox: result.front.bbox, margins: result.front.margins, defects: (result.front.defects||[]).map(d=>({...d, size:'sm'})) },
-      back:  { bbox: result.back.bbox,  margins: result.back.margins,  defects: (result.back.defects ||[]).map(d=>({...d, size:'sm'})) }
-    };
+    analysis = normalizeAnalysis(result);
     saveToHistory();
     goResult();
   } catch(err) {
     clearInterval(tick);
     console.error(err);
-    showToast('Erreur IA — mode démo activé');
-    // demo fallback
-    analysis = {
-      name: 'Carte Pokémon', set: 'Set inconnu • FR', price_usd: 50,
-      psa: {grade:7, confidence:65}, bgs: {grade:7.5, confidence:62}, cgc: {grade:7.5, confidence:64},
-      scores: {centering:7, corners:8, edges:8, surface:9},
-      front: {
-        bbox: { x:10, y:8, w:80, h:84 },
-        margins: { top:46.5, bottom:53.5, left:48.2, right:51.8 },
-        defects: [{x:20,y:75,size:'sm'},{x:80,y:25,size:'sm'}]
-      },
-      back: {
-        bbox: { x:10, y:8, w:80, h:84 },
-        margins: { top:48, bottom:52, left:49, right:51 },
-        defects: []
-      }
-    };
-    saveToHistory();
+    showToast('Erreur : ' + (err.message || 'inconnue'));
+    // fallback so user still sees the UI
+    analysis = normalizeAnalysis({
+      name: 'Carte (analyse échouée)', set: '—', price_usd: 0,
+      psa:{grade:0,confidence:0}, bgs:{grade:0,confidence:0}, cgc:{grade:0,confidence:0},
+      scores:{centering:0,corners:0,edges:0,surface:0},
+      front:{ corners_outer:[{x:8,y:5},{x:92,y:5},{x:92,y:95},{x:8,y:95}], corners_inner:[{x:14,y:11},{x:88,y:11},{x:88,y:89},{x:14,y:89}], defects:[] },
+      back: { corners_outer:[{x:8,y:5},{x:92,y:5},{x:92,y:95},{x:8,y:95}], corners_inner:[{x:14,y:11},{x:88,y:11},{x:88,y:89},{x:14,y:89}], defects:[] }
+    });
     goResult();
   }
+}
+
+function normalizeAnalysis(r) {
+  // ensure every defect has a size
+  ['front','back'].forEach(f => {
+    if (!r[f]) r[f] = {corners_outer:[{x:8,y:5},{x:92,y:5},{x:92,y:95},{x:8,y:95}], corners_inner:[{x:14,y:11},{x:88,y:11},{x:88,y:89},{x:14,y:89}], defects:[]};
+    r[f].defects = (r[f].defects||[]).map(d => ({...d, size: d.size||'sm'}));
+  });
+  return r;
 }
 
 async function callClaudeVision() {
   const frontB64 = imgFront.split(',')[1];
   const backB64 = imgBack ? imgBack.split(',')[1] : null;
-
   const content = [
-    { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: frontB64 } },
-    { type: 'text', text: 'FRONT of the Pokémon card.' }
+    { type:'image', source:{ type:'base64', media_type:'image/jpeg', data: frontB64 } },
+    { type:'text', text: 'FRONT of the Pokémon card.' }
   ];
   if (backB64) {
-    content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: backB64 } });
-    content.push({ type: 'text', text: 'BACK of the Pokémon card.' });
+    content.push({ type:'image', source:{ type:'base64', media_type:'image/jpeg', data: backB64 } });
+    content.push({ type:'text', text: 'BACK of the Pokémon card.' });
   }
-  content.push({ type: 'text', text: `Analyze these Pokémon TCG card photos for grading. Return ONLY a valid JSON object, no markdown, no backticks, no commentary:
+  content.push({ type:'text', text: `Analyze these Pokémon TCG card photos. Return ONLY a valid JSON object (no markdown, no backticks, no commentary):
 
 {
-  "name": "card name",
-  "set": "set name • language (e.g. 'Base Set • Japanese')",
+  "name": "Charizard",
+  "set": "Base Set • English",
   "price_usd": 50,
   "psa": { "grade": 8, "confidence": 72 },
   "bgs": { "grade": 8.5, "confidence": 68 },
   "cgc": { "grade": 8.5, "confidence": 70 },
-  "scores": { "centering": 8.5, "corners": 9.0, "edges": 8.0, "surface": 9.5 },
+  "scores": { "centering": 8.5, "corners": 9, "edges": 8, "surface": 9.5 },
   "front": {
-    "bbox": { "x": 12, "y": 8, "w": 76, "h": 84 },
-    "margins": { "top": 46.5, "bottom": 53.5, "left": 48.2, "right": 51.8 },
+    "corners_outer": [
+      { "x": 8.5, "y": 5.2 },
+      { "x": 91.5, "y": 5.2 },
+      { "x": 91.5, "y": 94.8 },
+      { "x": 8.5, "y": 94.8 }
+    ],
+    "corners_inner": [
+      { "x": 13.2, "y": 10.5 },
+      { "x": 86.8, "y": 10.5 },
+      { "x": 86.8, "y": 89.5 },
+      { "x": 13.2, "y": 89.5 }
+    ],
     "defects": [
       { "x": 15, "y": 72, "desc": "corner wear" }
     ]
   },
   "back": {
-    "bbox": { "x": 12, "y": 8, "w": 76, "h": 84 },
-    "margins": { "top": 48, "bottom": 52, "left": 49, "right": 51 },
+    "corners_outer": [ ... 4 points ],
+    "corners_inner": [ ... 4 points ],
     "defects": []
   }
 }
 
-CRITICAL:
-- "bbox" is the bounding box of the CARD itself inside the photo (x, y, width, height in % of photo). Detect precisely where the card edges are.
-- "margins" is the centering ratio of the inner art frame within the card border: top+bottom=100, left+right=100. e.g. perfectly centered = 50/50/50/50. Off-center top = top<50, bottom>50.
-- "defects" x/y are in % of the photo (not the card). Place dots on visible scratches, wear, dents.
-- Grades and confidence must reflect the actual card condition visible.` });
+CRUCIAL:
+- corners_outer = 4 points in order: top-left, top-right, bottom-right, bottom-left of the CARD edge in the photo (x,y in % of the photo dimensions, 0=left/top, 100=right/bottom).
+- corners_inner = 4 points (same order) of the INNER illustration border (the inner yellow line on Pokémon cards). This is the artwork frame, NOT the energy symbols inside.
+- These coordinates must match the actual visible edges in the photo. Look carefully at where the card actually is.
+- defects x,y in % of photo. Place where you see scratches, dents, whitening.
+- For "back" face, corners_inner = the inner Pokeball circle area is irrelevant; use the inner colored border instead (the inner blue rectangle border).` });
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -1007,328 +661,385 @@ CRITICAL:
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 1200,
+      max_tokens: 1500,
       messages: [{ role: 'user', content }]
     })
   });
   const data = await res.json();
   if (data.error) throw new Error(data.error.message);
-  let txt = data.content[0].text.trim().replace(/```json|```/g, '').trim();
+  let txt = data.content[0].text.trim().replace(/```json|```/g,'').trim();
   return JSON.parse(txt);
+}
+
+// ===== GEOMETRY HELPERS =====
+// Convert 4 corner % coords + img rendered rect → 4 pixel points
+function cornersToPixels(corners, rect) {
+  return corners.map(c => ({ x: (c.x/100)*rect.width, y: (c.y/100)*rect.height }));
+}
+// Convert pixel point back to %
+function pixelsToCorners(pts, rect) {
+  return pts.map(p => ({ x: (p.x/rect.width)*100, y: (p.y/rect.height)*100 }));
+}
+// SVG path string for a quadrilateral
+function quadPath(pts) {
+  return `M ${pts[0].x} ${pts[0].y} L ${pts[1].x} ${pts[1].y} L ${pts[2].x} ${pts[2].y} L ${pts[3].x} ${pts[3].y} Z`;
+}
+// midpoint between two points
+function mid(p1, p2) { return { x:(p1.x+p2.x)/2, y:(p1.y+p2.y)/2 }; }
+// Compute centering percentages from outer/inner quads
+// Returns: { top, bottom, left, right }
+function computeCentering(outer, inner) {
+  // Distance from outer-top edge midpoint to inner-top edge midpoint
+  const outerTopMid = mid(outer[0], outer[1]);
+  const outerBotMid = mid(outer[3], outer[2]);
+  const outerLeftMid = mid(outer[0], outer[3]);
+  const outerRightMid = mid(outer[1], outer[2]);
+  const innerTopMid = mid(inner[0], inner[1]);
+  const innerBotMid = mid(inner[3], inner[2]);
+  const innerLeftMid = mid(inner[0], inner[3]);
+  const innerRightMid = mid(inner[1], inner[2]);
+
+  const topBorder = Math.abs(innerTopMid.y - outerTopMid.y);
+  const botBorder = Math.abs(outerBotMid.y - innerBotMid.y);
+  const leftBorder = Math.abs(innerLeftMid.x - outerLeftMid.x);
+  const rightBorder = Math.abs(outerRightMid.x - innerRightMid.x);
+
+  const totalV = topBorder + botBorder || 1;
+  const totalH = leftBorder + rightBorder || 1;
+  return {
+    top: (topBorder / totalV) * 100,
+    bottom: (botBorder / totalV) * 100,
+    left: (leftBorder / totalH) * 100,
+    right: (rightBorder / totalH) * 100
+  };
 }
 
 // ===== RESULT RENDERING =====
 function renderResult() {
   const a = analysis;
-  $('#r-name').textContent = a.name;
-  $('#r-meta').textContent = a.set;
+  $('#r-name').textContent = a.name || '—';
+  $('#r-meta').textContent = a.set || '—';
   $('#r-price').textContent = a.price_usd ? '+$'+a.price_usd : '';
   $('#img-front').src = imgFront || '';
   $('#img-back').src = imgBack || imgFront || '';
-  $('#sc-c').textContent = a.scores.centering;
-  $('#sc-co').textContent = a.scores.corners;
-  $('#sc-e').textContent = a.scores.edges;
-  $('#sc-s').textContent = a.scores.surface;
+  $('#sc-c').textContent = a.scores?.centering ?? '—';
+  $('#sc-co').textContent = a.scores?.corners ?? '—';
+  $('#sc-e').textContent = a.scores?.edges ?? '—';
+  $('#sc-s').textContent = a.scores?.surface ?? '—';
   updateGrader();
-  // wait for images to load then draw overlay
-  const imgF = $('#img-front');
-  const imgB = $('#img-back');
-  if (imgF.complete) drawOverlay('front'); else imgF.onload = ()=>drawOverlay('front');
-  if (imgB.complete) drawOverlay('back');  else imgB.onload  = ()=>drawOverlay('back');
+  const f = $('#img-front'); const b = $('#img-back');
+  const drawF = () => drawResultOverlay('front');
+  const drawB = () => drawResultOverlay('back');
+  if (f.complete && f.naturalWidth) drawF(); else f.onload = drawF;
+  if (b.complete && b.naturalWidth) drawB(); else b.onload = drawB;
 }
-
 function updateGrader() {
   const g = analysis[currentGrader];
   const color = currentGrader==='psa'?'var(--psa)':currentGrader==='bgs'?'var(--bgs)':'var(--cgc)';
-  $('#r-grade').textContent = g.grade;
+  $('#r-grade').textContent = g?.grade ?? '—';
   $('#r-glabel').textContent = currentGrader.toUpperCase();
   $('#r-glabel').style.color = color;
-  $('#r-pct').textContent = g.confidence + '%';
+  $('#r-pct').textContent = (g?.confidence ?? 0) + '%';
   $('#r-pct').style.color = color;
   $$('.gpill').forEach(p=>p.classList.remove('active'));
   $('.gpill.'+currentGrader).classList.add('active');
 }
 function setGrader(g) { currentGrader = g; updateGrader(); }
-
 function showFace(face) {
   currentFace = face;
-  $$('.face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===face));
+  $$('#result .face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===face));
   $$('.face-page').forEach(p=>p.classList.toggle('active', p.dataset.face===face));
-  drawOverlay(face);
+  drawResultOverlay(face);
 }
 
-function toggleScores() {
-  const g = $('#score-grid');
-  g.style.display = g.style.display==='none' ? 'grid' : 'none';
-}
-
-// draw the overlay for a face: outer card box + inner margins box + 4 orange bars + labels + defects
-function drawOverlay(face) {
+// Draw read-only overlay (orange bars + red borders + defects)
+function drawResultOverlay(face) {
   const wrap = $('#face-area-'+face);
   const img = $('#img-'+face);
   if (!img.complete || !img.naturalWidth) return;
   const data = analysis[face];
-  if (!data || !data.bbox) return;
+  if (!data) return;
 
-  // remove old overlay (but keep <img> and pills)
-  wrap.querySelectorAll('.overlay-layer').forEach(n=>n.remove());
+  wrap.querySelectorAll('.overlay-svg').forEach(n=>n.remove());
 
-  // size of rendered img
   const rect = img.getBoundingClientRect();
   const wrapRect = wrap.getBoundingClientRect();
-  // we draw overlay inside wrap, positioned relative to image
   const offsetTop = rect.top - wrapRect.top;
   const offsetLeft = rect.left - wrapRect.left;
 
-  const layer = document.createElement('div');
-  layer.className = 'overlay-layer';
-  layer.style.cssText = `position:absolute;top:${offsetTop}px;left:${offsetLeft}px;width:${rect.width}px;height:${rect.height}px;pointer-events:none;`;
-  wrap.appendChild(layer);
+  const outerPx = cornersToPixels(data.corners_outer, rect);
+  const innerPx = cornersToPixels(data.corners_inner, rect);
+  const cent = computeCentering(outerPx, innerPx);
 
-  const bbox = data.bbox;
-  // outer card rectangle, in pixels relative to image
-  const cardL = (bbox.x/100)*rect.width;
-  const cardT = (bbox.y/100)*rect.height;
-  const cardW = (bbox.w/100)*rect.width;
-  const cardH = (bbox.h/100)*rect.height;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('class','overlay-svg');
+  svg.setAttribute('style', `position:absolute;top:${offsetTop}px;left:${offsetLeft}px;width:${rect.width}px;height:${rect.height}px;pointer-events:none;overflow:visible`);
+  svg.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
 
-  // outer border
-  const outer = document.createElement('div');
-  outer.style.cssText = `position:absolute;left:${cardL}px;top:${cardT}px;width:${cardW}px;height:${cardH}px;border:1.5px solid var(--red);border-radius:6px;`;
-  layer.appendChild(outer);
+  // outer card border (red)
+  const outerPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+  outerPath.setAttribute('d', quadPath(outerPx));
+  outerPath.setAttribute('fill','none');
+  outerPath.setAttribute('stroke','#ff4d4d');
+  outerPath.setAttribute('stroke-width','1.5');
+  svg.appendChild(outerPath);
 
-  // inner box from margins
-  const m = data.margins || {top:50,bottom:50,left:50,right:50};
-  // margins: top is the fraction of (top+bottom border thickness) on top.
-  // visualize: orange bar on top = thickness of top border. Let's use a small fraction of card height for border thickness in pixels.
-  const borderTopFrac = m.top / 100;  // 0.5 = centered
-  const borderBotFrac = m.bottom / 100;
-  const borderLeftFrac = m.left / 100;
-  const borderRightFrac = m.right / 100;
-  // total border thickness as fraction of card size (assume ~8% of card width is the border zone)
-  const totalBorderH = cardH * 0.10;  // 10% of card height is total top+bottom border
-  const totalBorderW = cardW * 0.10;
-  const tT = borderTopFrac * totalBorderH;     // pixels from card top edge to inner top
-  const tB = borderBotFrac * totalBorderH;
-  const tL = borderLeftFrac * totalBorderW;
-  const tR = borderRightFrac * totalBorderW;
+  // inner illustration border (red)
+  const innerPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+  innerPath.setAttribute('d', quadPath(innerPx));
+  innerPath.setAttribute('fill','none');
+  innerPath.setAttribute('stroke','#ff4d4d');
+  innerPath.setAttribute('stroke-width','1.5');
+  svg.appendChild(innerPath);
 
-  // inner box
-  const innerL = cardL + tL;
-  const innerT = cardT + tT;
-  const innerR = cardL + cardW - tR;
-  const innerB = cardT + cardH - tB;
-  const inner = document.createElement('div');
-  inner.style.cssText = `position:absolute;left:${innerL}px;top:${innerT}px;width:${innerR-innerL}px;height:${innerB-innerT}px;border:1.5px solid var(--red);border-radius:4px;`;
-  layer.appendChild(inner);
-
-  // orange bars (top, bottom, left, right): represent the BORDER zone between outer and inner
-  // top bar
-  const barT = document.createElement('div');
-  barT.style.cssText = `position:absolute;left:${innerL}px;top:${cardT + tT*0.3}px;width:${innerR-innerL}px;height:6px;background:var(--orange);border-radius:3px;`;
-  layer.appendChild(barT);
-  // bottom bar
-  const barB = document.createElement('div');
-  barB.style.cssText = `position:absolute;left:${innerL}px;top:${innerB + tB*0.3}px;width:${innerR-innerL}px;height:6px;background:var(--orange);border-radius:3px;`;
-  layer.appendChild(barB);
-  // left bar
-  const barL = document.createElement('div');
-  barL.style.cssText = `position:absolute;left:${cardL + tL*0.3}px;top:${innerT}px;width:6px;height:${innerB-innerT}px;background:var(--orange);border-radius:3px;`;
-  layer.appendChild(barL);
-  // right bar
-  const barR = document.createElement('div');
-  barR.style.cssText = `position:absolute;left:${innerR + tR*0.3}px;top:${innerT}px;width:6px;height:${innerB-innerT}px;background:var(--orange);border-radius:3px;`;
-  layer.appendChild(barR);
-
-  // labels with %
-  function lbl(text, top, left, cx, cy) {
-    const e = document.createElement('div');
-    e.style.cssText = `position:absolute;left:${left}px;top:${top}px;transform:translate(${cx},${cy});background:rgba(0,0,0,0.78);color:#fff;font-size:11px;font-weight:700;padding:3px 7px;border-radius:5px;white-space:nowrap;`;
-    e.textContent = text;
-    layer.appendChild(e);
+  // 4 orange bars: drawn between outer and inner on each side
+  // Top bar: between outer top edge and inner top edge
+  function drawBar(p1Outer, p2Outer, p1Inner, p2Inner) {
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    // bar = a thin polygon halfway between outer and inner edges
+    const m1 = { x:(p1Outer.x+p1Inner.x)/2, y:(p1Outer.y+p1Inner.y)/2 };
+    const m2 = { x:(p2Outer.x+p2Inner.x)/2, y:(p2Outer.y+p2Inner.y)/2 };
+    // thickness perpendicular to bar direction
+    const dx = m2.x - m1.x, dy = m2.y - m1.y;
+    const len = Math.hypot(dx,dy) || 1;
+    const nx = -dy/len * 3, ny = dx/len * 3; // 3px thickness each side
+    const pts = [
+      { x: m1.x + nx, y: m1.y + ny },
+      { x: m2.x + nx, y: m2.y + ny },
+      { x: m2.x - nx, y: m2.y - ny },
+      { x: m1.x - nx, y: m1.y - ny }
+    ];
+    path.setAttribute('d', `M ${pts[0].x} ${pts[0].y} L ${pts[1].x} ${pts[1].y} L ${pts[2].x} ${pts[2].y} L ${pts[3].x} ${pts[3].y} Z`);
+    path.setAttribute('fill','#ff8c42');
+    svg.appendChild(path);
+    return m1; // returns start midpoint for label
   }
-  lbl(m.top.toFixed(1)+'%', cardT + tT*0.3 + 3, (innerL+innerR)/2, '-50%', '0');
-  lbl(m.bottom.toFixed(1)+'%', innerB + tB*0.3 - 18, (innerL+innerR)/2, '-50%', '0');
-  lbl(m.left.toFixed(1)+'%', (innerT+innerB)/2 - 9, cardL + tL*0.3 + 9, '0', '0');
-  lbl(m.right.toFixed(1)+'%', (innerT+innerB)/2 - 9, innerR + tR*0.3 - 50, '0', '0');
+  drawBar(outerPx[0], outerPx[1], innerPx[0], innerPx[1]); // top
+  drawBar(outerPx[3], outerPx[2], innerPx[3], innerPx[2]); // bottom
+  drawBar(outerPx[0], outerPx[3], innerPx[0], innerPx[3]); // left
+  drawBar(outerPx[1], outerPx[2], innerPx[1], innerPx[2]); // right
 
-  // defects
+  // labels (HTML divs over the SVG, easier to style)
+  function lbl(text, x, y, cx='-50%', cy='-50%') {
+    const e = document.createElement('div');
+    e.style.cssText = `position:absolute;left:${x}px;top:${y}px;transform:translate(${cx},${cy});background:rgba(0,0,0,.78);color:#fff;font-size:11px;font-weight:700;padding:3px 7px;border-radius:5px;white-space:nowrap;pointer-events:none;`;
+    e.textContent = text;
+    e.classList.add('overlay-lbl');
+    return e;
+  }
+  const labelLayer = document.createElement('div');
+  labelLayer.className = 'overlay-svg';
+  labelLayer.style.cssText = `position:absolute;top:${offsetTop}px;left:${offsetLeft}px;width:${rect.width}px;height:${rect.height}px;pointer-events:none`;
+
+  const topMid = mid(mid(outerPx[0],outerPx[1]), mid(innerPx[0],innerPx[1]));
+  const botMid = mid(mid(outerPx[3],outerPx[2]), mid(innerPx[3],innerPx[2]));
+  const leftMid = mid(mid(outerPx[0],outerPx[3]), mid(innerPx[0],innerPx[3]));
+  const rightMid = mid(mid(outerPx[1],outerPx[2]), mid(innerPx[1],innerPx[2]));
+
+  labelLayer.appendChild(lbl(cent.top.toFixed(1)+'%', topMid.x, topMid.y));
+  labelLayer.appendChild(lbl(cent.bottom.toFixed(1)+'%', botMid.x, botMid.y));
+  labelLayer.appendChild(lbl(cent.left.toFixed(1)+'%', leftMid.x, leftMid.y));
+  labelLayer.appendChild(lbl(cent.right.toFixed(1)+'%', rightMid.x, rightMid.y));
+
+  // defects (red squares)
   (data.defects||[]).forEach(d=>{
-    const sz = d.size==='lg'?32 : d.size==='md'?22 : 14;
+    const sz = d.size==='lg'?28 : d.size==='md'?20 : 13;
     const dx = (d.x/100)*rect.width;
     const dy = (d.y/100)*rect.height;
     const el = document.createElement('div');
-    el.style.cssText = `position:absolute;left:${dx}px;top:${dy}px;width:${sz}px;height:${sz}px;margin:${-sz/2}px 0 0 ${-sz/2}px;border:2px solid var(--red);border-radius:3px;background:rgba(255,77,77,0.15);`;
-    layer.appendChild(el);
+    el.style.cssText = `position:absolute;left:${dx}px;top:${dy}px;width:${sz}px;height:${sz}px;margin:${-sz/2}px 0 0 ${-sz/2}px;border:2px solid var(--red);border-radius:3px;background:rgba(255,77,77,.15);pointer-events:none`;
+    labelLayer.appendChild(el);
   });
+
+  wrap.appendChild(svg);
+  wrap.appendChild(labelLayer);
 }
 
-// redraw on resize
-window.addEventListener('resize', ()=>{
+window.addEventListener('resize', () => {
   if ($('#result').classList.contains('active')) {
-    drawOverlay('front'); drawOverlay('back');
+    drawResultOverlay('front'); drawResultOverlay('back');
   }
+  if ($('#edit-center').classList.contains('active')) renderEditOverlay();
+  if ($('#edit-damage').classList.contains('active')) renderDamageOverlay();
 });
 
 // ===== EDIT CENTERING =====
 function switchEditFace(face) {
   editFace = face;
-  $$('.edit-face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===face));
-  $('#edit-img').src = (face==='front' ? imgFront : imgBack) || imgFront;
-  $('#edit-img').onload = renderEditCenterOverlay;
-  if ($('#edit-img').complete) renderEditCenterOverlay();
+  $$('#edit-center .edit-face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===face));
+  loadEditImage();
 }
 
-function renderEditCenterOverlay() {
+function renderEditOverlay() {
   const wrap = $('#edit-wrap');
   const img = $('#edit-img');
-  // remove old
+  if (!img.complete || !img.naturalWidth) return;
   wrap.querySelectorAll('.edit-layer').forEach(n=>n.remove());
 
   const rect = img.getBoundingClientRect();
   const wrapRect = wrap.getBoundingClientRect();
-  const offsetTop = rect.top - wrapRect.top;
-  const offsetLeft = rect.left - wrapRect.left;
+  const offT = rect.top - wrapRect.top;
+  const offL = rect.left - wrapRect.left;
 
   const data = analysis[editFace];
-  if (!data || !data.bbox) return;
-  const bbox = data.bbox;
-  const m = data.margins || {top:50,bottom:50,left:50,right:50};
-
-  const cardL = offsetLeft + (bbox.x/100)*rect.width;
-  const cardT = offsetTop + (bbox.y/100)*rect.height;
-  const cardW = (bbox.w/100)*rect.width;
-  const cardH = (bbox.h/100)*rect.height;
-  const totalBorderH = cardH * 0.10;
-  const totalBorderW = cardW * 0.10;
+  let outerPx = cornersToPixels(data.corners_outer, rect);
+  let innerPx = cornersToPixels(data.corners_inner, rect);
 
   const layer = document.createElement('div');
   layer.className = 'edit-layer';
-  layer.style.cssText = `position:absolute;inset:0;`;
+  layer.style.cssText = `position:absolute;top:${offT}px;left:${offL}px;width:${rect.width}px;height:${rect.height}px;`;
   wrap.appendChild(layer);
 
-  // outer border
-  const outer = document.createElement('div');
-  outer.style.cssText = `position:absolute;left:${cardL}px;top:${cardT}px;width:${cardW}px;height:${cardH}px;border:1.5px solid var(--red);border-radius:6px;pointer-events:none;`;
-  layer.appendChild(outer);
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('style', 'position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none');
+  layer.appendChild(svg);
 
-  function recompute() {
-    const tT = (m.top/100) * totalBorderH;
-    const tB = (m.bottom/100) * totalBorderH;
-    const tL = (m.left/100) * totalBorderW;
-    const tR = (m.right/100) * totalBorderW;
-    const innerL = cardL + tL;
-    const innerT = cardT + tT;
-    const innerR = cardL + cardW - tR;
-    const innerB = cardT + cardH - tB;
+  const outerPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+  outerPath.setAttribute('fill','none');
+  outerPath.setAttribute('stroke','#ff4d4d');
+  outerPath.setAttribute('stroke-width','1.5');
+  svg.appendChild(outerPath);
 
-    inner.style.left = innerL+'px'; inner.style.top = innerT+'px';
-    inner.style.width = (innerR-innerL)+'px'; inner.style.height = (innerB-innerT)+'px';
+  const innerPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+  innerPath.setAttribute('fill','none');
+  innerPath.setAttribute('stroke','#ff4d4d');
+  innerPath.setAttribute('stroke-width','1.5');
+  svg.appendChild(innerPath);
 
-    barT.style.left = innerL+'px'; barT.style.top = (cardT + tT*0.3)+'px'; barT.style.width = (innerR-innerL)+'px';
-    barB.style.left = innerL+'px'; barB.style.top = (innerB + tB*0.3)+'px'; barB.style.width = (innerR-innerL)+'px';
-    barL.style.left = (cardL + tL*0.3)+'px'; barL.style.top = innerT+'px'; barL.style.height = (innerB-innerT)+'px';
-    barR.style.left = (innerR + tR*0.3)+'px'; barR.style.top = innerT+'px'; barR.style.height = (innerB-innerT)+'px';
-
-    lblT.style.left = ((innerL+innerR)/2)+'px'; lblT.style.top = (cardT + tT*0.3 - 22)+'px'; lblT.textContent = m.top.toFixed(1)+'%';
-    lblB.style.left = ((innerL+innerR)/2)+'px'; lblB.style.top = (innerB + tB*0.3 + 10)+'px'; lblB.textContent = m.bottom.toFixed(1)+'%';
-    lblL.style.left = (cardL + tL*0.3 + 12)+'px'; lblL.style.top = ((innerT+innerB)/2 - 9)+'px'; lblL.textContent = m.left.toFixed(1)+'%';
-    lblR.style.left = (innerR + tR*0.3 - 50)+'px'; lblR.style.top = ((innerT+innerB)/2 - 9)+'px'; lblR.textContent = m.right.toFixed(1)+'%';
+  const bars = []; // 4 bars: top, bottom, left, right
+  for (let i=0; i<4; i++) {
+    const b = document.createElementNS('http://www.w3.org/2000/svg','path');
+    b.setAttribute('fill','#ff8c42');
+    svg.appendChild(b);
+    bars.push(b);
   }
 
-  const inner = document.createElement('div');
-  inner.style.cssText = `position:absolute;border:1.5px solid var(--red);border-radius:4px;pointer-events:none;`;
-  layer.appendChild(inner);
+  const labels = [];
+  for (let i=0; i<4; i++) {
+    const e = document.createElement('div');
+    e.style.cssText = `position:absolute;background:rgba(0,0,0,.85);color:#fff;font-size:11px;font-weight:700;padding:3px 7px;border-radius:5px;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;`;
+    layer.appendChild(e);
+    labels.push(e);
+  }
 
-  const barT = document.createElement('div');
-  barT.style.cssText = `position:absolute;height:8px;background:var(--orange);border-radius:4px;cursor:ns-resize;touch-action:none;`;
-  barT.dataset.dir = 'top'; layer.appendChild(barT);
-  const barB = document.createElement('div');
-  barB.style.cssText = `position:absolute;height:8px;background:var(--orange);border-radius:4px;cursor:ns-resize;touch-action:none;`;
-  barB.dataset.dir = 'bottom'; layer.appendChild(barB);
-  const barL = document.createElement('div');
-  barL.style.cssText = `position:absolute;width:8px;background:var(--orange);border-radius:4px;cursor:ew-resize;touch-action:none;`;
-  barL.dataset.dir = 'left'; layer.appendChild(barL);
-  const barR = document.createElement('div');
-  barR.style.cssText = `position:absolute;width:8px;background:var(--orange);border-radius:4px;cursor:ew-resize;touch-action:none;`;
-  barR.dataset.dir = 'right'; layer.appendChild(barR);
-
-  const lblT = document.createElement('div');
-  const lblB = document.createElement('div');
-  const lblL = document.createElement('div');
-  const lblR = document.createElement('div');
-  [lblT,lblB,lblL,lblR].forEach(l=>{
-    l.style.cssText = `position:absolute;background:rgba(0,0,0,0.85);color:#fff;font-size:11px;font-weight:700;padding:3px 7px;border-radius:5px;transform:translateX(-50%);pointer-events:none;white-space:nowrap;`;
-    layer.appendChild(l);
+  // Draggable inner edge handles (4 large invisible hit areas)
+  const sides = ['top','bottom','left','right'];
+  const handles = sides.map(side => {
+    const h = document.createElement('div');
+    h.style.cssText = 'position:absolute;background:transparent;cursor:pointer;touch-action:none;z-index:5';
+    h.dataset.side = side;
+    layer.appendChild(h);
+    return h;
   });
-  // left/right labels don't translate -50% horizontally
-  lblL.style.transform = ''; lblR.style.transform = '';
 
-  recompute();
+  function redraw() {
+    outerPath.setAttribute('d', quadPath(outerPx));
+    innerPath.setAttribute('d', quadPath(innerPx));
+    // bars: drawn halfway between outer/inner sides
+    function bar(p1Out, p2Out, p1In, p2In, target) {
+      const m1 = { x:(p1Out.x+p1In.x)/2, y:(p1Out.y+p1In.y)/2 };
+      const m2 = { x:(p2Out.x+p2In.x)/2, y:(p2Out.y+p2In.y)/2 };
+      const dx = m2.x-m1.x, dy = m2.y-m1.y;
+      const len = Math.hypot(dx,dy)||1;
+      const nx = -dy/len * 4, ny = dx/len * 4;
+      const pts = [
+        { x:m1.x+nx, y:m1.y+ny },
+        { x:m2.x+nx, y:m2.y+ny },
+        { x:m2.x-nx, y:m2.y-ny },
+        { x:m1.x-nx, y:m1.y-ny }
+      ];
+      target.setAttribute('d', `M ${pts[0].x} ${pts[0].y} L ${pts[1].x} ${pts[1].y} L ${pts[2].x} ${pts[2].y} L ${pts[3].x} ${pts[3].y} Z`);
+      return mid(m1, m2);
+    }
+    const cTop = bar(outerPx[0], outerPx[1], innerPx[0], innerPx[1], bars[0]);
+    const cBot = bar(outerPx[3], outerPx[2], innerPx[3], innerPx[2], bars[1]);
+    const cLeft = bar(outerPx[0], outerPx[3], innerPx[0], innerPx[3], bars[2]);
+    const cRight = bar(outerPx[1], outerPx[2], innerPx[1], innerPx[2], bars[3]);
 
-  // drag handlers
-  function startDrag(bar) {
-    let dragging = false;
-    bar.addEventListener('pointerdown', e => {
-      dragging = true; bar.setPointerCapture(e.pointerId);
+    const cent = computeCentering(outerPx, innerPx);
+    labels[0].style.left = cTop.x+'px'; labels[0].style.top = cTop.y+'px'; labels[0].textContent = cent.top.toFixed(1)+'%';
+    labels[1].style.left = cBot.x+'px'; labels[1].style.top = cBot.y+'px'; labels[1].textContent = cent.bottom.toFixed(1)+'%';
+    labels[2].style.left = cLeft.x+'px'; labels[2].style.top = cLeft.y+'px'; labels[2].textContent = cent.left.toFixed(1)+'%';
+    labels[3].style.left = cRight.x+'px'; labels[3].style.top = cRight.y+'px'; labels[3].textContent = cent.right.toFixed(1)+'%';
+
+    // place handles as wide stripes along each inner edge
+    function placeHandle(h, p1In, p2In, side) {
+      const dx = p2In.x - p1In.x, dy = p2In.y - p1In.y;
+      const len = Math.hypot(dx,dy)||1;
+      const cx = (p1In.x + p2In.x)/2;
+      const cy = (p1In.y + p2In.y)/2;
+      if (side === 'top' || side === 'bottom') {
+        h.style.left = (cx - len/2) + 'px';
+        h.style.top  = (cy - 14) + 'px';
+        h.style.width = len + 'px';
+        h.style.height = '28px';
+      } else {
+        h.style.left = (cx - 14) + 'px';
+        h.style.top  = (cy - len/2) + 'px';
+        h.style.width = '28px';
+        h.style.height = len + 'px';
+      }
+    }
+    placeHandle(handles[0], innerPx[0], innerPx[1], 'top');
+    placeHandle(handles[1], innerPx[3], innerPx[2], 'bottom');
+    placeHandle(handles[2], innerPx[0], innerPx[3], 'left');
+    placeHandle(handles[3], innerPx[1], innerPx[2], 'right');
+  }
+
+  // drag: moving an inner edge shifts both its endpoints perpendicular to the edge
+  handles.forEach(h => {
+    let dragging = false, lastX = 0, lastY = 0;
+    h.addEventListener('pointerdown', e => {
+      dragging = true;
+      h.setPointerCapture(e.pointerId);
+      lastX = e.clientX; lastY = e.clientY;
       e.preventDefault();
     });
-    bar.addEventListener('pointermove', e => {
+    h.addEventListener('pointermove', e => {
       if (!dragging) return;
-      const dir = bar.dataset.dir;
-      if (dir === 'top' || dir === 'bottom') {
-        // y relative to card top
-        const wrapTop = wrap.getBoundingClientRect().top;
-        const y = e.clientY - wrapTop - cardT;
-        // y is distance from card top edge. constrain so dragging is sensible.
-        // We map y to top% : if y in [0, totalBorderH] for top bar, that's m.top in [0,100]
-        if (dir === 'top') {
-          let pct = clamp((y / totalBorderH) * 100, 5, 95);
-          m.top = pct; m.bottom = 100 - pct;
-        } else {
-          // bottom bar: y position relative to card bottom edge
-          const yFromBottom = cardH - y;
-          let pct = clamp((yFromBottom / totalBorderH) * 100, 5, 95);
-          m.bottom = pct; m.top = 100 - pct;
-        }
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      lastX = e.clientX; lastY = e.clientY;
+      const side = h.dataset.side;
+      if (side === 'top') {
+        innerPx[0].y = clamp(innerPx[0].y + dy, outerPx[0].y+2, innerPx[3].y-10);
+        innerPx[1].y = clamp(innerPx[1].y + dy, outerPx[1].y+2, innerPx[2].y-10);
+      } else if (side === 'bottom') {
+        innerPx[3].y = clamp(innerPx[3].y + dy, innerPx[0].y+10, outerPx[3].y-2);
+        innerPx[2].y = clamp(innerPx[2].y + dy, innerPx[1].y+10, outerPx[2].y-2);
+      } else if (side === 'left') {
+        innerPx[0].x = clamp(innerPx[0].x + dx, outerPx[0].x+2, innerPx[1].x-10);
+        innerPx[3].x = clamp(innerPx[3].x + dx, outerPx[3].x+2, innerPx[2].x-10);
       } else {
-        const wrapLeft = wrap.getBoundingClientRect().left;
-        const x = e.clientX - wrapLeft - cardL;
-        if (dir === 'left') {
-          let pct = clamp((x / totalBorderW) * 100, 5, 95);
-          m.left = pct; m.right = 100 - pct;
-        } else {
-          const xFromRight = cardW - x;
-          let pct = clamp((xFromRight / totalBorderW) * 100, 5, 95);
-          m.right = pct; m.left = 100 - pct;
-        }
+        innerPx[1].x = clamp(innerPx[1].x + dx, innerPx[0].x+10, outerPx[1].x-2);
+        innerPx[2].x = clamp(innerPx[2].x + dx, innerPx[3].x+10, outerPx[2].x-2);
       }
-      recompute();
+      // save back to analysis
+      analysis[editFace].corners_inner = pixelsToCorners(innerPx, rect);
+      redraw();
     });
-    bar.addEventListener('pointerup', () => dragging = false);
-    bar.addEventListener('pointercancel', () => dragging = false);
-  }
-  [barT, barB, barL, barR].forEach(startDrag);
+    h.addEventListener('pointerup', () => dragging = false);
+    h.addEventListener('pointercancel', () => dragging = false);
+  });
+
+  redraw();
 }
 
-function saveCenterEdit() {
-  // analysis[editFace].margins was being mutated by drag → already saved
-  goResult();
-}
+function saveCenterEdit() { goResult(); }
 
 // ===== EDIT DAMAGE =====
 function switchDmgFace(face) {
   dmgFace = face;
-  $$('.edit-face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===face));
-  $('#dmg-img').src = (face==='front' ? imgFront : imgBack) || imgFront;
-  $('#dmg-img').onload = renderDamageOverlay;
-  if ($('#dmg-img').complete) renderDamageOverlay();
+  $$('#edit-damage .edit-face-tab').forEach(t=>t.classList.toggle('active', t.dataset.face===face));
+  loadDmgImage();
 }
 
 function renderDamageOverlay() {
   const wrap = $('#dmg-wrap');
   const img = $('#dmg-img');
+  if (!img.complete || !img.naturalWidth) return;
   wrap.querySelectorAll('.dmg-layer').forEach(n=>n.remove());
+
   const rect = img.getBoundingClientRect();
   const wrapRect = wrap.getBoundingClientRect();
   const oT = rect.top - wrapRect.top, oL = rect.left - wrapRect.left;
@@ -1337,23 +1048,22 @@ function renderDamageOverlay() {
   layer.className = 'dmg-layer';
   layer.style.cssText = `position:absolute;left:${oL}px;top:${oT}px;width:${rect.width}px;height:${rect.height}px;cursor:crosshair;`;
   layer.addEventListener('click', e => {
-    const r = layer.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width) * 100;
-    const y = ((e.clientY - r.top) / r.height) * 100;
-    // ignore clicks on existing defects (handled by their own click)
     if (e.target !== layer) return;
+    const r = layer.getBoundingClientRect();
+    const x = ((e.clientX - r.left)/r.width)*100;
+    const y = ((e.clientY - r.top)/r.height)*100;
     dmgHistory.push(JSON.parse(JSON.stringify(analysis[dmgFace].defects)));
-    analysis[dmgFace].defects.push({x, y, size: dmgSize});
+    analysis[dmgFace].defects.push({ x, y, size: dmgSize });
     renderDamageOverlay();
   });
   wrap.appendChild(layer);
 
   analysis[dmgFace].defects.forEach((d, idx) => {
-    const sz = d.size==='lg'?32 : d.size==='md'?22 : 14;
+    const sz = d.size==='lg'?28 : d.size==='md'?20 : 13;
     const el = document.createElement('div');
-    el.style.cssText = `position:absolute;left:${(d.x/100)*rect.width}px;top:${(d.y/100)*rect.height}px;width:${sz}px;height:${sz}px;margin:${-sz/2}px 0 0 ${-sz/2}px;border:2px solid var(--red);border-radius:3px;background:rgba(255,77,77,0.2);cursor:pointer;`;
-    el.addEventListener('click', e => {
-      e.stopPropagation();
+    el.style.cssText = `position:absolute;left:${(d.x/100)*rect.width}px;top:${(d.y/100)*rect.height}px;width:${sz}px;height:${sz}px;margin:${-sz/2}px 0 0 ${-sz/2}px;border:2px solid var(--red);border-radius:3px;background:rgba(255,77,77,.2);cursor:pointer`;
+    el.addEventListener('click', ev => {
+      ev.stopPropagation();
       dmgHistory.push(JSON.parse(JSON.stringify(analysis[dmgFace].defects)));
       analysis[dmgFace].defects.splice(idx, 1);
       renderDamageOverlay();
@@ -1370,12 +1080,11 @@ function undoDamage() {
 }
 function setDmgSize(s, ev) {
   dmgSize = s;
-  $$('.size-pick button').forEach(b=>b.classList.remove('active'));
+  $$('.size-pick button').forEach(b => b.classList.remove('active'));
   ev.target.classList.add('active');
 }
-function saveDamageEdit() { goResult(); }
 
-// ===== GRADES STORAGE =====
+// ===== HISTORY =====
 function saveToHistory() {
   const g = {
     id: Date.now(),
@@ -1386,42 +1095,28 @@ function saveToHistory() {
   };
   grades.unshift(g);
   if (grades.length > 30) grades.length = 30;
-  localStorage.setItem('pg_grades_v2', JSON.stringify(grades));
+  localStorage.setItem('pg_grades_v3', JSON.stringify(grades));
 }
 function renderGrades() {
   const wrap = $('#grades-list');
   if (!grades.length) { wrap.innerHTML = ''; return; }
-  wrap.innerHTML = grades.map(g=>`
-    <div class="grade-row" onclick="reopenGrade(${g.id})">
-      <div class="grade-thumb">${g.thumb?`<img src="${g.thumb}">`:'🃏'}</div>
+  wrap.innerHTML = grades.map(g => `
+    <div class="grade-row">
+      <div class="grade-thumb">${g.thumb ? '<img src="'+g.thumb+'">' : '🃏'}</div>
       <div class="grade-info">
-        <h3>${escapeHtml(g.name)}</h3>
-        <p>${escapeHtml(g.set || '')} · ${g.ts}</p>
+        <h3>${esc(g.name)}</h3>
+        <p>${esc(g.set||'')} · ${g.ts}</p>
         <span class="grade-badge"><b>PSA</b><span class="n">${g.psa.grade}</span><span class="p">${g.psa.confidence}%</span></span>
       </div>
     </div>
   `).join('');
 }
-function escapeHtml(s) { return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function reopenGrade(id) {
-  const g = grades.find(x=>x.id===id);
-  if (!g) return;
-  imgFront = g.thumb; imgBack = g.thumb;
-  analysis = {
-    name: g.name, set: g.set, price_usd: 0,
-    psa: g.psa, bgs: g.bgs, cgc: g.cgc,
-    scores: {centering:8,corners:8,edges:8,surface:8},
-    front: {bbox:{x:10,y:8,w:80,h:84}, margins:{top:50,bottom:50,left:50,right:50}, defects:[]},
-    back: {bbox:{x:10,y:8,w:80,h:84}, margins:{top:50,bottom:50,left:50,right:50}, defects:[]}
-  };
-  goResult();
-}
+function esc(s) { return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function deleteCurrentGrade() {
   if (!confirm('Supprimer ce grade ?')) return;
   goHome();
 }
 
-// init
 renderGrades();
 </script>
 </body>
